@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">简单记账</string>
+    <string name="string_home_tv_hint">新账本</string>
+    <string name="string_setting_tv_hint">设置</string>
+    <string name="string_detail_tv_hint">详情</string>
+    <string name="string_home_btn_add">添加</string>
+</resources>

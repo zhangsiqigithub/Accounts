@@ -1,0 +1,45 @@
+package com.dragon.accounts.provider;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.dragon.accounts.util.LogUtil;
+
+public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
+
+    public DbHelper(Context context) {
+        super(context, DB_NAME, null, VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String TABLESQL_ACCOUNT = "create table if not exists "
+                + AccountBookColumns.TABLE_NAME + " ("
+                + AccountBookColumns.COLUMNS_ID + " integer primary key,"
+                + AccountBookColumns.COLUMNS_NAME + " varchar,"
+                + AccountBookColumns.COLUMNS_SIZE + " integer,"
+                + AccountBookColumns.COLUMNS_COLOR_POSITION + " integer)";
+        db.execSQL(TABLESQL_ACCOUNT);
+
+        String TABLESQL_ACCOUNT_ITEM = "create table if not exists "
+                + AccountColumns.TABLE_NAME + " ("
+                + AccountColumns.COLUMNS_ID + " integer primary key,"
+                + AccountColumns.COLUMNS_TITLE + " varchar,"
+                + AccountColumns.COLUMNS_CONTENT + " varchar,"
+                + AccountColumns.COLUMNS_money + " float,"
+                + AccountColumns.COLUMNS_date + " long"
+                + ")";
+        db.execSQL(TABLESQL_ACCOUNT_ITEM);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        LogUtil.d("DbHelper-->onUpgrade-->database from version " + oldVersion
+                + " to " + newVersion + ", destroy all old data");
+        db.execSQL("DROP TABLE IF EXISTS " + AccountBookColumns.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + AccountColumns.TABLE_NAME);
+        onCreate(db);
+    }
+
+}
