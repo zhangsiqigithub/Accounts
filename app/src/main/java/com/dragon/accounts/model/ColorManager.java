@@ -1,4 +1,4 @@
-package com.dragon.accounts.setting.model;
+package com.dragon.accounts.model;
 
 import android.graphics.Color;
 

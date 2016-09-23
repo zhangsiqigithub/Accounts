@@ -16,7 +16,7 @@ public interface IProivderMetaData {
     /**
      * 数据库版本
      */
-    int VERSION = 4;
+    int VERSION = 2;
 
     /**
      * 账本
@@ -30,7 +30,7 @@ public interface IProivderMetaData {
         Uri URI_ACCOUNT = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
 
         // 表列名
-        String COLUMNS_ID = "_id";// id
+        String COLUMNS_ACCOUNT_BOOK_ID = "account_book_id";// 这条记录所在的账本id
         String COLUMNS_NAME = "name";// 账本名称
         String COLUMNS_SIZE = "size";// 账目数量
         String COLUMNS_COLOR_POSITION = "color_position";// 账本颜色id
@@ -42,20 +42,21 @@ public interface IProivderMetaData {
     /**
      * 每一条帐目记录
      */
-    interface AccountColumns extends AccountBookColumns {
+    interface AccountColumns extends BaseColumns {
 
         // 表名
-        String ITEM_TABLE_NAME = "accounts";
+        String TABLE_NAME = "accounts";
 
         // 外部程序访问本表的uri地址：登录
-        Uri URI_ACCOUNT = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME + "/" + ITEM_TABLE_NAME);
+        Uri URI_ACCOUNT = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
 
         // 表列名
-        String COLUMNS_ID = "_id";// id
-        String COLUMNS_TITLE = "title";// 标题
+        String COLUMNS_ACCOUNT_BOOK_ID = "account_book_id";// 这条记录所在的账本id
+        String COLUMNS_NAME = "name";// 标题
         String COLUMNS_CONTENT = "content";// 内容
-        String COLUMNS_money = "money";// 钱
-        String COLUMNS_date = "date";// 日期
+        String COLUMNS_MONEY = "money";// 钱
+        String COLUMNS_TYPE = "type";// 流动类型：收入/支出
+        String COLUMNS_DATE = "date";// 日期
 
         //该ContentProvider所返回的数据类型的定义
         String CONTENT_TYPE_ITEM = "vnd.android.cursor.item/accounts";

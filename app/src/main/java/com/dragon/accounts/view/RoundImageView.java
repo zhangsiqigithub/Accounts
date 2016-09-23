@@ -1,4 +1,4 @@
-package com.dragon.accounts.setting.view;
+package com.dragon.accounts.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

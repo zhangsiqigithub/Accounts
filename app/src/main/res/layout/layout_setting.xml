@@ -11,7 +11,7 @@
         android:gravity="center_vertical"
         android:padding="14dip">
 
-        <com.dragon.accounts.setting.view.RoundImageView
+        <com.dragon.accounts.view.RoundImageView
             android:layout_width="30dip"
             android:layout_height="30dip"
             android:src="@mipmap/icon_photo" />
@@ -78,9 +78,10 @@
                 android:textSize="12dip" />
 
             <TextView
+                android:id="@+id/setting_total_revenue_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4654654654"
+                android:text="0"
                 android:textColor="#88444444"
                 android:textSize="12dip" />
         </LinearLayout>
@@ -100,9 +101,10 @@
                 android:textSize="12dip" />
 
             <TextView
+                android:id="@+id/setting_total_expenses_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="546546546"
+                android:text="0"
                 android:textColor="#88444444"
                 android:textSize="12dip" />
         </LinearLayout>
@@ -122,9 +124,10 @@
                 android:textSize="12dip" />
 
             <TextView
+                android:id="@+id/setting_total_balance_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="123113"
+                android:text="0"
                 android:textColor="#88444444"
                 android:textSize="12dip" />
         </LinearLayout>

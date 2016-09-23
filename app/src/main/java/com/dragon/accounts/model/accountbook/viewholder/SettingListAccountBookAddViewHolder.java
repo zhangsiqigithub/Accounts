@@ -1,10 +1,10 @@
-package com.dragon.accounts.setting.model.viewholder;
+package com.dragon.accounts.model.accountbook.viewholder;
 
 import android.content.Context;
 import android.view.View;
 
 import com.dragon.accounts.R;
-import com.dragon.accounts.model.IAccountBook;
+import com.dragon.accounts.model.accountbook.info.IAccountBookInfo;
 
 public class SettingListAccountBookAddViewHolder extends BaseSettingListViewHolder {
 
@@ -16,7 +16,7 @@ public class SettingListAccountBookAddViewHolder extends BaseSettingListViewHold
     }
 
     @Override
-    public void buildView(IAccountBook item) {
+    public void buildView(IAccountBookInfo item) {
         super.buildView(item);
         setting_list_item_parent.setOnClickListener(this);
     }

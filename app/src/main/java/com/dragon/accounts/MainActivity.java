@@ -7,20 +7,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 
-import com.dragon.accounts.home.adapter.HomeListAdapter;
+import com.dragon.accounts.adapter.MainViewPagerListAdapter;
 import com.dragon.accounts.fragment.DetailFragment;
-import com.dragon.accounts.home.HomeFragment;
+import com.dragon.accounts.fragment.AccountFragment;
+import com.dragon.accounts.model.SettingModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private ViewPager home_viewpager;
 
     private SettingModel mSettingModel;
 
+    private AccountFragment accountFragment;
     private List<Fragment> fragmentList;
 
     @Override
@@ -34,7 +36,8 @@ public class HomeActivity extends FragmentActivity {
 
     private void initData() {
         fragmentList = new ArrayList<>();
-        fragmentList.add(new HomeFragment(this));
+        accountFragment = new AccountFragment(this);
+        fragmentList.add(accountFragment);
         fragmentList.add(new DetailFragment(this));
     }
 
@@ -43,15 +46,22 @@ public class HomeActivity extends FragmentActivity {
         home_viewpager = (ViewPager) findViewById(R.id.home_viewpager);
 
         mSettingModel = new SettingModel(this, findViewById(R.id.left_drawer));
+        mSettingModel.setSettingModelCallback(new SettingModel.SettingModelCallback() {
+            @Override
+            public void onAccountSelect() {
+                closeDrawer();
+                accountFragment.resetData();
+            }
+        });
 
-        home_viewpager.setAdapter(new HomeListAdapter(getSupportFragmentManager(), fragmentList));
+        home_viewpager.setAdapter(new MainViewPagerListAdapter(getSupportFragmentManager(), fragmentList));
         home_viewpager.setCurrentItem(0);
     }
 
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            closeDrawer();
         } else {
             super.onBackPressed();
         }
@@ -59,5 +69,17 @@ public class HomeActivity extends FragmentActivity {
 
     public void openDrawer() {
         mDrawerLayout.openDrawer(Gravity.LEFT);
+    }
+
+    public void closeDrawer() {
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mSettingModel != null) {
+            mSettingModel.hideAccountAddDialog();
+        }
     }
 }

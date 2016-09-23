@@ -16,19 +16,23 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
     public void onCreate(SQLiteDatabase db) {
         String TABLESQL_ACCOUNT = "create table if not exists "
                 + AccountBookColumns.TABLE_NAME + " ("
-                + AccountBookColumns.COLUMNS_ID + " integer primary key,"
+                + AccountBookColumns._ID + " integer primary key,"
+                + AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
                 + AccountBookColumns.COLUMNS_NAME + " varchar,"
                 + AccountBookColumns.COLUMNS_SIZE + " integer,"
-                + AccountBookColumns.COLUMNS_COLOR_POSITION + " integer)";
+                + AccountBookColumns.COLUMNS_COLOR_POSITION + " integer"
+                + ")";
         db.execSQL(TABLESQL_ACCOUNT);
 
         String TABLESQL_ACCOUNT_ITEM = "create table if not exists "
                 + AccountColumns.TABLE_NAME + " ("
-                + AccountColumns.COLUMNS_ID + " integer primary key,"
-                + AccountColumns.COLUMNS_TITLE + " varchar,"
+                + AccountColumns._ID + " integer primary key,"
+                + AccountColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
+                + AccountColumns.COLUMNS_NAME + " varchar,"
                 + AccountColumns.COLUMNS_CONTENT + " varchar,"
-                + AccountColumns.COLUMNS_money + " float,"
-                + AccountColumns.COLUMNS_date + " long"
+                + AccountColumns.COLUMNS_MONEY + " float,"
+                + AccountColumns.COLUMNS_TYPE + " integer,"
+                + AccountColumns.COLUMNS_DATE + " long"
                 + ")";
         db.execSQL(TABLESQL_ACCOUNT_ITEM);
     }

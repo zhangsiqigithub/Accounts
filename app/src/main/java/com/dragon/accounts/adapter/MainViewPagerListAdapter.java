@@ -1,4 +1,4 @@
-package com.dragon.accounts.home.adapter;
+package com.dragon.accounts.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,11 +6,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-public class HomeListAdapter extends FragmentPagerAdapter {
+public class MainViewPagerListAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragmentList;
 
-    public HomeListAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+    public MainViewPagerListAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
         this.fragmentList = fragmentList;
     }

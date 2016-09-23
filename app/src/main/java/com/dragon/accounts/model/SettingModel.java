@@ -1,8 +1,8 @@
-package com.dragon.accounts;
+package com.dragon.accounts.model;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
@@ -10,31 +10,41 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dragon.accounts.model.AccountAddBookInfo;
-import com.dragon.accounts.model.AccountBookInfo;
-import com.dragon.accounts.model.IAccountBook;
+import com.dragon.accounts.R;
+import com.dragon.accounts.adapter.AccountBookListAdapter;
+import com.dragon.accounts.model.accountbook.info.AccountBookInfo;
+import com.dragon.accounts.model.accountbook.info.IAccountBookInfo;
 import com.dragon.accounts.provider.AccountContentProvider;
-import com.dragon.accounts.provider.IProivderMetaData;
-import com.dragon.accounts.setting.adapter.SettingListAdapter;
-import com.dragon.accounts.setting.view.AccountAddDialog;
 import com.dragon.accounts.util.CompatUtils;
 import com.dragon.accounts.util.LogUtil;
+import com.dragon.accounts.view.AccountAddDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingModel implements IAccountBook.Callback {
+public class SettingModel implements IAccountBookInfo.Callback {
+
+    public interface SettingModelCallback {
+        void onAccountSelect();
+    }
 
     private static final int LIST_COLUMN = 3;
 
     private Context mContext;
+    private Activity mActivity;
 
+    private TextView setting_total_revenue_size;
+    private TextView setting_total_expenses_size;
+    private TextView setting_total_balance_size;
     private RecyclerView setting_recyclerview;
-    private SettingListAdapter mSettingListAdapater;
+    private AccountBookListAdapter mSettingListAdapater;
+    private SettingModelCallback mSettingModelCallback;
+    private AccountAddDialog mAccountAddDialog;
 
-    private List<IAccountBook> list = new ArrayList<>();
+    private List<IAccountBookInfo> list = new ArrayList<>();
 
     private static final int MSG_UPDATE = 1;
     private Handler mHandler = new Handler() {
@@ -43,7 +53,7 @@ public class SettingModel implements IAccountBook.Callback {
             switch (msg.what) {
                 case MSG_UPDATE:
                     if (mSettingListAdapater == null) {
-                        mSettingListAdapater = new SettingListAdapter(mContext, list);
+                        mSettingListAdapater = new AccountBookListAdapter(mContext, list);
                         setting_recyclerview.setAdapter(mSettingListAdapater);
                     } else {
                         mSettingListAdapater.notifyDataSetChanged();
@@ -53,8 +63,9 @@ public class SettingModel implements IAccountBook.Callback {
         }
     };
 
-    public SettingModel(Context context, View view) {
-        this.mContext = context;
+    public SettingModel(Activity activity, View view) {
+        this.mActivity = activity;
+        this.mContext = mActivity.getApplicationContext();
         init(view);
     }
 
@@ -66,6 +77,9 @@ public class SettingModel implements IAccountBook.Callback {
 
     private void initView(View view) {
         setting_recyclerview = (RecyclerView) view.findViewById(R.id.setting_recyclerview);
+        setting_total_revenue_size = (TextView) view.findViewById(R.id.setting_total_revenue_size);
+        setting_total_expenses_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
+        setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_balance_size);
     }
 
     private void initRecyclerView() {
@@ -86,7 +100,7 @@ public class SettingModel implements IAccountBook.Callback {
             @Override
             public void run() {
                 super.run();
-                List<IAccountBook> bookList = AccountContentProvider.queryAccounts(mContext, SettingModel.this);
+                List<IAccountBookInfo> bookList = AccountContentProvider.queryAccountBooks(mContext, SettingModel.this);
                 list.clear();
                 list.addAll(bookList);
                 mHandler.sendEmptyMessage(MSG_UPDATE);
@@ -94,15 +108,21 @@ public class SettingModel implements IAccountBook.Callback {
         }.start();
     }
 
-    private AccountAddDialog mAccountAddDialog;
+    public void setSettingModelCallback(SettingModelCallback settingModelCallback) {
+        this.mSettingModelCallback = settingModelCallback;
+    }
 
     @Override
     public void onListItemClick(int type, int position) {
         switch (type) {
-            case IAccountBook.TYPE_ACCOUNT_BOOK:
-
+            case IAccountBookInfo.TYPE_ACCOUNT_BOOK:
+                AccountBookInfo accountBookInfo = (AccountBookInfo) list.get(position);
+                AccountManager.setCurrentAccountBookId(mContext, accountBookInfo.accountBookId);
+                if (mSettingModelCallback != null) {
+                    mSettingModelCallback.onAccountSelect();
+                }
                 break;
-            case IAccountBook.TYPE_ACCOUNT_ADD:
+            case IAccountBookInfo.TYPE_ACCOUNT_ADD:
                 showAccountAddDialog();
                 break;
         }
@@ -111,14 +131,14 @@ public class SettingModel implements IAccountBook.Callback {
     private void showAccountAddDialog() {
         hideAccountAddDialog();
         if (mAccountAddDialog == null) {
-            AccountAddDialog.Builder builder = new AccountAddDialog.Builder(mContext);
-            builder.setCallback(new AccountAddDialog.Callback() {
+            mAccountAddDialog = new AccountAddDialog(mActivity);
+            mAccountAddDialog.setCallback(new AccountAddDialog.Callback() {
                 @Override
                 public void onOkClick(Dialog dialog, String name, int colorPosition) {
                     if (TextUtils.isEmpty(name)) {
                         Toast.makeText(mContext.getApplicationContext(), mContext.getString(R.string.string_account_add_error_tips), Toast.LENGTH_SHORT).show();
                     } else {
-                        AccountContentProvider.insertAccounts(mContext, name, 0, colorPosition);
+                        AccountContentProvider.insertAccountBooks(mContext, name, 0, colorPosition);
                         queryAccounts();
                         dialog.dismiss();
                     }
@@ -129,15 +149,14 @@ public class SettingModel implements IAccountBook.Callback {
                     dialog.dismiss();
                 }
             });
-            mAccountAddDialog = builder.create();
+            mAccountAddDialog.create();
         }
         mAccountAddDialog.show();
     }
 
-    private void hideAccountAddDialog() {
+    public void hideAccountAddDialog() {
         if (mAccountAddDialog != null && mAccountAddDialog.isShowing()) {
-            mAccountAddDialog.hide();
-            mAccountAddDialog = null;
+            mAccountAddDialog.dismiss();
         }
     }
 
