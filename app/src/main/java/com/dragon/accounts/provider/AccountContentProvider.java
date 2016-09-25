@@ -149,7 +149,7 @@ public class AccountContentProvider extends ContentProvider {
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_NAME, name);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_CONTENT, content);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_MONEY, money);
-        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_TYPE, type);
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE, type);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_DATE, System.currentTimeMillis());
         context.getContentResolver().insert(IProivderMetaData.AccountColumns.URI_ACCOUNT, contentValues);
         log("insertAccount-->" + contentValues);
@@ -197,7 +197,7 @@ public class AccountContentProvider extends ContentProvider {
             String name = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_NAME));
             String content = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_CONTENT));
             float money = query.getFloat(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_MONEY));
-            int type = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_TYPE));
+            int accountType = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE));
             long date = query.getLong(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_DATE));
 
             log("queryAccounts-->" +
@@ -206,7 +206,7 @@ public class AccountContentProvider extends ContentProvider {
                     " name:" + name +
                     " content:" + content +
                     " money:" + money +
-                    " type:" + type +
+                    " type:" + accountType +
                     " date:" + date
             );
             AccountInfo info = new AccountInfo();
@@ -214,7 +214,7 @@ public class AccountContentProvider extends ContentProvider {
             info.name = name;
             info.content = content;
             info.money = money;
-            info.type = type;
+            info.accountType= accountType;
             info.date = date;
             tempList.add(info);
         }

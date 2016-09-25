@@ -55,7 +55,7 @@ public interface IProivderMetaData {
         String COLUMNS_NAME = "name";// 标题
         String COLUMNS_CONTENT = "content";// 内容
         String COLUMNS_MONEY = "money";// 钱
-        String COLUMNS_TYPE = "type";// 流动类型：收入/支出
+        String COLUMNS_ACCOUNT_TYPE = "account_type";// 流动类型：收入/支出
         String COLUMNS_DATE = "date";// 日期
 
         //该ContentProvider所返回的数据类型的定义

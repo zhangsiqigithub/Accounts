@@ -31,7 +31,7 @@
         <provider
             android:name=".util.sp.MutiProcessSharedPrefProvider"
             android:authorities="com.dragon.util.sharepref" />
-        
+
     </application>
 
 </manifest>

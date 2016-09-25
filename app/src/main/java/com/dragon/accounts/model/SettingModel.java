@@ -79,7 +79,7 @@ public class SettingModel implements IAccountBookInfo.Callback {
         setting_recyclerview = (RecyclerView) view.findViewById(R.id.setting_recyclerview);
         setting_total_revenue_size = (TextView) view.findViewById(R.id.setting_total_revenue_size);
         setting_total_expenses_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
-        setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_balance_size);
+        setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
     }
 
     private void initRecyclerView() {

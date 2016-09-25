@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.dragon.accounts.MainActivity;
 import com.dragon.accounts.R;
@@ -31,8 +32,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private int mCurrentAccountBookId;
 
     private View home_hint;
+    private TextView setting_total_revenue_size;
+    private TextView setting_total_balance_size;
 
     private static final int MSG_UPDATE = 1;
+    private static final int MSG_UPDATE_REVENUE = 2;
+    private static final int MSG_UPDATE_BANLANCE = 3;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -45,6 +50,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                     } else {
                         mAdapter.notifyDataSetChanged();
                     }
+                    break;
+                case MSG_UPDATE_REVENUE:
+                    setting_total_revenue_size.setText(String.valueOf(msg.arg1));
+                    break;
+                case MSG_UPDATE_BANLANCE:
+                    setting_total_balance_size.setText(String.valueOf(msg.arg1));
                     break;
             }
         }
@@ -60,6 +71,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_home, null);
         home_hint = view.findViewById(R.id.fragment_account_hint);
         home_recyclerview = (RecyclerView) view.findViewById(R.id.fragment_account_recyclerview);
+        setting_total_revenue_size = (TextView) view.findViewById(R.id.setting_total_revenue_size);
+        setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
         home_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
 
         view.findViewById(R.id.fragment_account_add).setOnClickListener(this);
@@ -81,6 +94,11 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 mAccountInfoList.clear();
                 mAccountInfoList.addAll(infoList);
                 mHandler.sendEmptyMessage(MSG_UPDATE);
+
+                for(AccountInfo info: infoList){
+
+                }
+
             }
         }.start();
     }

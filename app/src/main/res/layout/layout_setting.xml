@@ -54,7 +54,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="#33444444" />
+        android:background="@color/color_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                 android:textSize="12dip" />
 
             <TextView
-                android:id="@+id/setting_total_balance_size"
+                android:id="@+id/setting_total_expenses_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"

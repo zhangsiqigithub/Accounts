@@ -53,6 +53,7 @@
         <ImageView
             android:layout_width="24dip"
             android:layout_height="24dip"
+            android:background="@android:color/white"
             android:src="@mipmap/icon_type_money" />
 
         <LinearLayout
