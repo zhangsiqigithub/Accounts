@@ -61,6 +61,20 @@ public class SharedPref {
         MutiProcessSharedPref.putLong(context, key, NAME, value);
     }
 
+    public static float getFloat(Context context, String key, float defValue) {
+        /*   SharedPreferences sharedPreferences = getSharedPref(context);
+           return sharedPreferences.getLong(key, defValue);*/
+        return MutiProcessSharedPref.getFloat(context, key, NAME, defValue);
+    }
+
+    public static void setFloat(Context context, String key, float value) {
+        /*  SharedPreferences sharedPreferences = getSharedPref(context);
+          Editor editor = sharedPreferences.edit();
+          editor.putLong(key, value);
+          editor.commit();*/
+        MutiProcessSharedPref.putFloat(context, key, NAME, value);
+    }
+
     public static void remove(Context context, String key) {
         /*   SharedPreferences sharedPreferences = getSharedPref(context);
            Editor editor = sharedPreferences.edit();

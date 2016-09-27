@@ -38,6 +38,7 @@ public class MutiProcessSharedPrefProvider extends ContentProvider {
     private static final int TYPE_STRING = 202;
     private static final int TYPE_BOOLEAN = 203;
     private static final int TYPE_STRINGS = 204;
+    private static final int TYPE_FLOAT = 205;
 
     static {
         sUriMatcher.addURI(sAuthority, "put", PUT);
@@ -47,6 +48,7 @@ public class MutiProcessSharedPrefProvider extends ContentProvider {
         sType.put("long", TYPE_LONG);
         sType.put("boolean", TYPE_BOOLEAN);
         sType.put("strings", TYPE_STRINGS);
+        sType.put("strings", TYPE_FLOAT);
     }
 
     @Override
@@ -126,6 +128,9 @@ public class MutiProcessSharedPrefProvider extends ContentProvider {
                 case TYPE_STRING:
                     cursor.addRow(new Object[]{pref.getString(key, defVal)});
                     break;
+                case TYPE_FLOAT:
+                    cursor.addRow(new Object[]{pref.getFloat(key, Float.valueOf(defVal))});
+                    break;
                 case TYPE_STRINGS:
                     Set<String> strings = pref.getStringSet(key, null);
                     if (strings != null) {
@@ -191,6 +196,10 @@ public class MutiProcessSharedPrefProvider extends ContentProvider {
                     break;
                 case TYPE_STRING:
                     editor.putString(key, arg1.getAsString(key));
+                    editor.commit();
+                    break;
+                case TYPE_FLOAT:
+                    editor.putFloat(key, arg1.getAsFloat(key));
                     editor.commit();
                     break;
                 case TYPE_STRINGS:

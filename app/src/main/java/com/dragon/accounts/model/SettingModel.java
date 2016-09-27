@@ -73,6 +73,13 @@ public class SettingModel implements IAccountBookInfo.Callback {
         initView(view);
         initRecyclerView();
         queryAccounts();
+
+        float totalRevenue = AccountManager.getTotalRevenue(mContext);
+        float totalExpenses = AccountManager.getTotalExpenses(mContext);
+
+        setting_total_revenue_size.setText(String.valueOf(totalRevenue));
+        setting_total_expenses_size.setText(String.valueOf(totalExpenses));
+        setting_total_balance_size.setText(String.valueOf(Math.max(totalRevenue - totalExpenses, 0.0f)));
     }
 
     private void initView(View view) {
@@ -104,6 +111,8 @@ public class SettingModel implements IAccountBookInfo.Callback {
                 list.clear();
                 list.addAll(bookList);
                 mHandler.sendEmptyMessage(MSG_UPDATE);
+
+
             }
         }.start();
     }
@@ -138,7 +147,7 @@ public class SettingModel implements IAccountBookInfo.Callback {
                     if (TextUtils.isEmpty(name)) {
                         Toast.makeText(mContext.getApplicationContext(), mContext.getString(R.string.string_account_add_error_tips), Toast.LENGTH_SHORT).show();
                     } else {
-                        AccountContentProvider.insertAccountBooks(mContext, name, 0, colorPosition);
+                        AccountContentProvider.insertAccountBooks(mContext, name.trim(), 0, colorPosition);
                         queryAccounts();
                         dialog.dismiss();
                     }

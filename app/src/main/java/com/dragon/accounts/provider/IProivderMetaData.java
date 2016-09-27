@@ -27,7 +27,7 @@ public interface IProivderMetaData {
         String TABLE_NAME = "accountBooks";
 
         // 外部程序访问本表的uri地址：登录
-        Uri URI_ACCOUNT = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
+        Uri URI_ACCOUNT_BOOK = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
 
         // 表列名
         String COLUMNS_ACCOUNT_BOOK_ID = "account_book_id";// 这条记录所在的账本id

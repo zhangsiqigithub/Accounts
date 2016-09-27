@@ -99,6 +99,29 @@ public class MutiProcessSharedPref {
         return defValue;
     }
 
+    public static void putFloat(Context cxt, String key, String prefNameString, float value) {
+        ContentValues cv = new ContentValues();
+        cv.put(key, value);
+        cxt.getContentResolver().update(
+                Uri.parse("content://" + MutiProcessSharedPrefProvider.sAuthority + "/"
+                        + MutiProcessSharedPrefProvider.SPUT + "/float/" + prefNameString), cv, null, null);
+    }
+
+    public static float getFloat(Context cxt, String key, String prefName, float defValue) {
+        Uri uri = Uri.parse("content://" + MutiProcessSharedPrefProvider.sAuthority + "/"
+                + MutiProcessSharedPrefProvider.SGET + "/float/" + prefName);
+        Cursor cursor = cxt.getContentResolver().query(uri, null, key, null, String.valueOf(defValue));
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                return cursor.getFloat(0);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return defValue;
+    }
+
     public static void clear(Context cxt, String prefName, String key) {
         Uri uri = Uri.parse("content://" + MutiProcessSharedPrefProvider.sAuthority + "/"
                 + MutiProcessSharedPrefProvider.SCLEAR + "/" + prefName);

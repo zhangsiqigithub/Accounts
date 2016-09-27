@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/layout_account_date_oval"
+            android:layout_width="5dip"
+            android:layout_height="5dip"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_oval_cecece" />
+
+        <TextView
+            android:id="@+id/layout_account_date_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip"
+            android:layout_toLeftOf="@id/layout_account_date_oval"
+            android:text="3月30号"
+            android:textColor="#44444444"
+            android:textSize="10dip" />
+
+        <TextView
+            android:id="@+id/layout_account_date_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_toRightOf="@id/layout_account_date_oval"
+            android:text="10.00"
+            android:textColor="#44444444"
+            android:textSize="10dip" />
+    </RelativeLayout>
+</RelativeLayout>

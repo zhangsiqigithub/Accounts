@@ -15,6 +15,7 @@ import com.dragon.accounts.model.accountbook.info.AccountAddBookInfo;
 import com.dragon.accounts.model.accountbook.info.AccountBookInfo;
 import com.dragon.accounts.model.accountbook.info.IAccountBookInfo;
 import com.dragon.accounts.util.LogUtil;
+import com.dragon.accounts.util.sp.SharedPref;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,11 +138,11 @@ public class AccountContentProvider extends ContentProvider {
         contentValues.put(IProivderMetaData.AccountBookColumns.COLUMNS_NAME, name);
         contentValues.put(IProivderMetaData.AccountBookColumns.COLUMNS_SIZE, size);
         contentValues.put(IProivderMetaData.AccountBookColumns.COLUMNS_COLOR_POSITION, colorPosition);
-        context.getContentResolver().insert(IProivderMetaData.AccountBookColumns.URI_ACCOUNT, contentValues);
+        context.getContentResolver().insert(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK, contentValues);
         log("insertAccountBooks-->" + contentValues);
     }
 
-    public static void insertAccount(Context context, String name, String content, int money, int type, int accountBookId) {
+    public static void insertAccount(Context context, String name, String content, float money, int accountType, int accountBookId) {
         if (context == null)
             return;
         ContentValues contentValues = new ContentValues();
@@ -149,15 +150,23 @@ public class AccountContentProvider extends ContentProvider {
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_NAME, name);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_CONTENT, content);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_MONEY, money);
-        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE, type);
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE, accountType);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_DATE, System.currentTimeMillis());
         context.getContentResolver().insert(IProivderMetaData.AccountColumns.URI_ACCOUNT, contentValues);
         log("insertAccount-->" + contentValues);
+        switch (accountType) {
+            case AccountManager.ACCOUNT_TYPE_REVENUE:
+                AccountManager.setTotalRevenue(context, money);
+                break;
+            case AccountManager.ACCOUNT_TYPE_EXPENSES:
+                AccountManager.setTotalExpenses(context, money);
+                break;
+        }
     }
 
     public static List<IAccountBookInfo> queryAccountBooks(Context context, IAccountBookInfo.Callback callback) {
         List<IAccountBookInfo> tempList = new ArrayList<>();
-        Cursor query = context.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT, null, null, null, null);
+        Cursor query = context.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK, null, null, null, null);
         while (query != null && query.moveToNext()) {
             int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountBookColumns._ID));
             int accountBookId = query.getInt(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID));
@@ -165,7 +174,7 @@ public class AccountContentProvider extends ContentProvider {
             int colorPosition = query.getInt(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_COLOR_POSITION));
             int size = getAccountsCount(context, accountBookId);
 
-            log("queryAccountBooks-->id:" + id + " accountBookId:" + accountBookId + " name:" + name + " size:" + size + " colorPosition:" + colorPosition);
+//            log("queryAccountBooks-->id:" + id + " accountBookId:" + accountBookId + " name:" + name + " size:" + size + " colorPosition:" + colorPosition);
 
             AccountBookInfo info = new AccountBookInfo();
             info.id = id;
@@ -190,31 +199,31 @@ public class AccountContentProvider extends ContentProvider {
                 null,
                 IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_BOOK_ID + "=?",
                 new String[]{String.valueOf(currentAccountBookId)},
-                null);
+                IProivderMetaData.AccountColumns.COLUMNS_DATE);
         while (query != null && query.moveToNext()) {
             int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns._ID));
             long accountBookId = query.getLong(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_BOOK_ID));
-            String name = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_NAME));
+            String title = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_NAME));
             String content = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_CONTENT));
             float money = query.getFloat(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_MONEY));
             int accountType = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE));
             long date = query.getLong(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_DATE));
 
-            log("queryAccounts-->" +
-                    "id:" + id +
-                    " accountBookId:" + accountBookId +
-                    " name:" + name +
-                    " content:" + content +
-                    " money:" + money +
-                    " type:" + accountType +
-                    " date:" + date
-            );
+//            log("queryAccounts-->" +
+//                    "id:" + id +
+//                    " accountBookId:" + accountBookId +
+//                    " title:" + title +
+//                    " content:" + content +
+//                    " money:" + money +
+//                    " accountType:" + accountType +
+//                    " date:" + date
+//            );
             AccountInfo info = new AccountInfo();
             info.id = id;
-            info.name = name;
+            info.title = title;
             info.content = content;
             info.money = money;
-            info.accountType= accountType;
+            info.accountType = accountType;
             info.date = date;
             tempList.add(info);
         }
@@ -236,7 +245,7 @@ public class AccountContentProvider extends ContentProvider {
     }
 
     public static int getAccountBookCount(Context context) {
-        Cursor query = context.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT, null, null, null, null);
+        Cursor query = context.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK, null, null, null, null);
         if (query != null) {
             return query.getCount();
         }

@@ -1,6 +1,7 @@
 package com.dragon.accounts.fragment;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,14 +17,21 @@ import com.dragon.accounts.MainActivity;
 import com.dragon.accounts.R;
 import com.dragon.accounts.adapter.AccountFragmentAdapter;
 import com.dragon.accounts.model.AccountManager;
+import com.dragon.accounts.model.account.info.AccountDateInfo;
 import com.dragon.accounts.model.account.info.AccountInfo;
 import com.dragon.accounts.model.account.info.IAccountInfo;
 import com.dragon.accounts.provider.AccountContentProvider;
+import com.dragon.accounts.provider.IProivderMetaData;
+import com.dragon.accounts.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountFragment extends BaseFragment implements View.OnClickListener {
+
+    private static final String KEY_ACCOUNT_REVENUE = "key_account_revenue";
+    private static final String KEY_ACCOUNT_EXPENSES = "key_account_expenses";
+    private static final String KEY_ACCOUNT_NAME = "key_account_name";
 
     private Context mContext;
     private List<IAccountInfo> mAccountInfoList = new ArrayList<>();
@@ -34,10 +42,10 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private View home_hint;
     private TextView setting_total_revenue_size;
     private TextView setting_total_balance_size;
+    private TextView fragment_account_title;
 
     private static final int MSG_UPDATE = 1;
-    private static final int MSG_UPDATE_REVENUE = 2;
-    private static final int MSG_UPDATE_BANLANCE = 3;
+    private static final int MSG_UPDATE_ACCOUNT_MONEY = 2;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -51,11 +59,11 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                         mAdapter.notifyDataSetChanged();
                     }
                     break;
-                case MSG_UPDATE_REVENUE:
-                    setting_total_revenue_size.setText(String.valueOf(msg.arg1));
-                    break;
-                case MSG_UPDATE_BANLANCE:
-                    setting_total_balance_size.setText(String.valueOf(msg.arg1));
+                case MSG_UPDATE_ACCOUNT_MONEY:
+                    Bundle bundle = msg.getData();
+                    setting_total_revenue_size.setText(String.valueOf(bundle.getFloat(KEY_ACCOUNT_REVENUE)));
+                    setting_total_balance_size.setText(String.valueOf(bundle.getFloat(KEY_ACCOUNT_EXPENSES)));
+                    fragment_account_title.setText(String.valueOf(bundle.getString(KEY_ACCOUNT_NAME)));
                     break;
             }
         }
@@ -68,11 +76,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, null);
+        View view = inflater.inflate(R.layout.fragment_account, null);
         home_hint = view.findViewById(R.id.fragment_account_hint);
         home_recyclerview = (RecyclerView) view.findViewById(R.id.fragment_account_recyclerview);
         setting_total_revenue_size = (TextView) view.findViewById(R.id.setting_total_revenue_size);
         setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
+        fragment_account_title = (TextView) view.findViewById(R.id.fragment_account_title);
         home_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
 
         view.findViewById(R.id.fragment_account_add).setOnClickListener(this);
@@ -90,14 +99,62 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void run() {
                 super.run();
-                List<AccountInfo> infoList = AccountContentProvider.queryAccounts(mContext, mCurrentAccountBookId);
+
+                List<IAccountInfo> resultList = new ArrayList<>();
+                List<AccountDateInfo> dateList = new ArrayList<>();
+                List<AccountInfo> accountList = AccountContentProvider.queryAccounts(mContext, mCurrentAccountBookId);
+
+                float totalRevenue = 0.0f;
+                float totaExpenses = 0.0f;
+                String date = null;
+                AccountDateInfo dateInfo = null;
+                for (AccountInfo info : accountList) {
+                    String millis = TimeUtil.getDayByMillis(info.date);
+                    boolean isSameDate = millis != null && millis.equals(date);
+                    if (isSameDate) {
+                        dateInfo.money += info.money;
+                    } else {
+                        dateInfo = new AccountDateInfo();
+                        dateInfo.money += info.money;
+                        dateInfo.date = millis;
+                    }
+                    date = millis;
+                    switch (info.accountType) {
+                        case AccountManager.ACCOUNT_TYPE_REVENUE:
+                            totalRevenue += info.money;
+                            break;
+                        case AccountManager.ACCOUNT_TYPE_EXPENSES:
+                            totaExpenses += info.money;
+                            break;
+                    }
+                    if (!isSameDate) {
+                        dateList.add(dateInfo);
+                        resultList.add(dateInfo);
+                    }
+                    resultList.add(info);
+                }
                 mAccountInfoList.clear();
-                mAccountInfoList.addAll(infoList);
+                mAccountInfoList.addAll(resultList);
                 mHandler.sendEmptyMessage(MSG_UPDATE);
 
-                for(AccountInfo info: infoList){
-
+                Cursor query = mContext.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK,
+                        null,
+                        IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + "=?",
+                        new String[]{String.valueOf(mCurrentAccountBookId)},
+                        null);
+                String name = null;
+                if (query != null && query.moveToNext()) {
+                    name = query.getString(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_NAME));
                 }
+
+                Message msg = Message.obtain();
+                msg.what = MSG_UPDATE_ACCOUNT_MONEY;
+                Bundle bundle = new Bundle();
+                bundle.putFloat(KEY_ACCOUNT_REVENUE, totalRevenue);
+                bundle.putFloat(KEY_ACCOUNT_EXPENSES, totaExpenses);
+                bundle.putString(KEY_ACCOUNT_NAME, name);
+                msg.setData(bundle);
+                mHandler.sendMessage(msg);
 
             }
         }.start();
@@ -107,7 +164,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fragment_account_add:
-                AccountContentProvider.insertAccount(mContext, "用餐", "早饭", 100, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
+                AccountContentProvider.insertAccount(mContext, "用餐", "早饭", 100.05f, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
                 resetData();
                 break;
             case R.id.fragment_account_hint:

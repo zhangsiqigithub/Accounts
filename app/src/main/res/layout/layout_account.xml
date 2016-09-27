@@ -3,74 +3,84 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_height="match_parent"
+        android:padding="5dip">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/fragment_account_img"
+            android:layout_width="24dip"
+            android:layout_height="24dip"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/white"
+            android:src="@mipmap/icon_type_money" />
+
+        <RelativeLayout
+            android:id="@+id/fragment_account_layout_left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
+            android:layout_toLeftOf="@id/fragment_account_img"
             android:paddingRight="5dip">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/fragment_account_layout_left_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="right"
+                android:layout_alignParentRight="true"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fragment_account_layout_left_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:text="@string/string_wages"
+                    android:textColor="#88444444"
+                    android:textSize="14dip" />
+
+                <TextView
+                    android:id="@+id/fragment_account_layout_left_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="5dip"
+                    android:layout_toLeftOf="@id/fragment_account_layout_left_title"
                     android:gravity="right|center_vertical"
                     android:text="213133232"
                     android:textColor="#44444444"
                     android:textSize="12dip" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/string_wages"
-                    android:textColor="#88444444"
-                    android:textSize="14dip" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <TextView
+                android:id="@+id/fragment_account_layout_left_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/fragment_account_layout_left_up"
+                android:gravity="right|center_vertical"
                 android:text="2月工资"
                 android:textColor="#44444444"
-                android:textSize="12dip" />
-        </LinearLayout>
+                android:textSize="10dip" />
+        </RelativeLayout>
 
-        <ImageView
-            android:layout_width="24dip"
-            android:layout_height="24dip"
-            android:background="@android:color/white"
-            android:src="@mipmap/icon_type_money" />
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/fragment_account_layout_right"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
+            android:layout_toRightOf="@id/fragment_account_img"
             android:paddingLeft="5dip">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/fragment_account_layout_right_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:gravity="left"
+                android:layout_alignParentLeft="true"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fragment_account_layout_right_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -79,24 +89,27 @@
                     android:textSize="14dip" />
 
                 <TextView
+                    android:id="@+id/fragment_account_layout_right_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dip"
+                    android:layout_toRightOf="@id/fragment_account_layout_right_title"
                     android:gravity="left|center_vertical"
                     android:text="213133232"
                     android:textColor="#44444444"
                     android:textSize="12dip" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <TextView
+                android:id="@+id/fragment_account_layout_right_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_below="@id/fragment_account_layout_right_up"
                 android:gravity="center"
                 android:text="2月工资"
                 android:textColor="#44444444"
-                android:textSize="12dip" />
-        </LinearLayout>
-
-    </LinearLayout>
+                android:textSize="10dip" />
+        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>
