@@ -5,6 +5,13 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="color_fragment_account_line">#44444444</color>
-    <color name="color_line">#cecece</color>
+    <color name="color_line">#dedede</color>
+    <color name="color_accounting_calculator_bg">#FF090816</color>
+    <color name="color_accounting_calculator_number_text">#ffffff</color>
+    <color name="color_accounting_calculator_line">@android:color/transparent</color>
+    <color name="color_accounting_calculator_pressed">#44ffffff</color>
+    <color name="color_accounting_calculator_ok_normal">@android:color/transparent</color>
+    <color name="color_aa444444">#aa444444</color>
+    <color name="color_aeaeae">#aeaeae</color>
 
 </resources>

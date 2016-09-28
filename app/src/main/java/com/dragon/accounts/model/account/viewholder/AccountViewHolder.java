@@ -9,6 +9,7 @@ import com.dragon.accounts.R;
 import com.dragon.accounts.model.AccountManager;
 import com.dragon.accounts.model.account.info.AccountInfo;
 import com.dragon.accounts.model.account.info.IAccountInfo;
+import com.dragon.accounts.util.AccountUtil;
 
 public class AccountViewHolder extends BaseAccountHolder {
 
@@ -40,7 +41,7 @@ public class AccountViewHolder extends BaseAccountHolder {
     @Override
     public void buildView(IAccountInfo item) {
         info = (AccountInfo) item;
-        float money = (float) (Math.round(info.money * 100)) / 100;
+        float money = AccountUtil.getAccountFloatMoney(info.money);
         switch (info.accountType) {
             case AccountManager.ACCOUNT_TYPE_REVENUE:
                 fragment_account_layout_left.setVisibility(View.VISIBLE);

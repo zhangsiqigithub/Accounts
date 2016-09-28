@@ -51,7 +51,6 @@ public interface IProivderMetaData {
         Uri URI_ACCOUNT = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
 
         // 表列名
-        String COLUMNS_ACCOUNT_BOOK_ID = "account_book_id";// 这条记录所在的账本id
         String COLUMNS_NAME = "name";// 标题
         String COLUMNS_CONTENT = "content";// 内容
         String COLUMNS_MONEY = "money";// 钱

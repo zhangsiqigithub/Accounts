@@ -1,6 +1,8 @@
 package com.dragon.accounts.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.dragon.accounts.AccountingActivity;
 import com.dragon.accounts.MainActivity;
 import com.dragon.accounts.R;
 import com.dragon.accounts.adapter.AccountFragmentAdapter;
@@ -22,12 +25,17 @@ import com.dragon.accounts.model.account.info.AccountInfo;
 import com.dragon.accounts.model.account.info.IAccountInfo;
 import com.dragon.accounts.provider.AccountContentProvider;
 import com.dragon.accounts.provider.IProivderMetaData;
+import com.dragon.accounts.util.AccountUtil;
 import com.dragon.accounts.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountFragment extends BaseFragment implements View.OnClickListener {
+
+    public interface AccountFragmentCallback {
+        void onAccountAdded();
+    }
 
     private static final String KEY_ACCOUNT_REVENUE = "key_account_revenue";
     private static final String KEY_ACCOUNT_EXPENSES = "key_account_expenses";
@@ -38,6 +46,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private RecyclerView home_recyclerview;
     private AccountFragmentAdapter mAdapter;
     private int mCurrentAccountBookId;
+
+    private AccountFragmentCallback mAccountFragmentCallback;
 
     private View home_hint;
     private TextView setting_total_revenue_size;
@@ -61,8 +71,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                     break;
                 case MSG_UPDATE_ACCOUNT_MONEY:
                     Bundle bundle = msg.getData();
-                    setting_total_revenue_size.setText(String.valueOf(bundle.getFloat(KEY_ACCOUNT_REVENUE)));
-                    setting_total_balance_size.setText(String.valueOf(bundle.getFloat(KEY_ACCOUNT_EXPENSES)));
+                    setting_total_revenue_size.setText(String.valueOf(AccountUtil.getAccountFloatMoney(bundle.getFloat(KEY_ACCOUNT_REVENUE))));
+                    setting_total_balance_size.setText(String.valueOf(AccountUtil.getAccountFloatMoney(bundle.getFloat(KEY_ACCOUNT_EXPENSES))));
                     fragment_account_title.setText(String.valueOf(bundle.getString(KEY_ACCOUNT_NAME)));
                     break;
             }
@@ -79,8 +89,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_account, null);
         home_hint = view.findViewById(R.id.fragment_account_hint);
         home_recyclerview = (RecyclerView) view.findViewById(R.id.fragment_account_recyclerview);
-        setting_total_revenue_size = (TextView) view.findViewById(R.id.setting_total_revenue_size);
-        setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
+        setting_total_revenue_size = (TextView) view.findViewById(R.id.fragment_account_total_revenue_size);
+        setting_total_balance_size = (TextView) view.findViewById(R.id.fragment_account_total_expenses_size);
         fragment_account_title = (TextView) view.findViewById(R.id.fragment_account_title);
         home_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
 
@@ -91,6 +101,10 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         resetData();
 
         return view;
+    }
+
+    public void setAccountFragmentCallback(AccountFragmentCallback accountFragmentCallback) {
+        this.mAccountFragmentCallback = accountFragmentCallback;
     }
 
     public void resetData() {
@@ -158,14 +172,19 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
             }
         }.start();
+        if (mAccountFragmentCallback != null) {
+            mAccountFragmentCallback.onAccountAdded();
+        }
     }
+
+    private static final int REQUEST_CODE = 1001;
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fragment_account_add:
+                AccountingActivity.start(getActivity(), REQUEST_CODE);
                 AccountContentProvider.insertAccount(mContext, "用餐", "早饭", 100.05f, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
-                resetData();
                 break;
             case R.id.fragment_account_hint:
 
@@ -176,4 +195,13 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE == requestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                resetData();
+            }
+        }
+    }
 }

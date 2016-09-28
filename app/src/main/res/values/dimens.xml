@@ -4,4 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="setting_list_item_height">100dp</dimen>
+    <dimen name="accounting_calculator_line1">10dp</dimen>
+    <dimen name="accounting_calculator_line2">35dp</dimen>
+    <dimen name="accounting_calculator_text_padding">10dp</dimen>
+    <dimen name="accounting_calculator_text_size">16sp</dimen>
 </resources>

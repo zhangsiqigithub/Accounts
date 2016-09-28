@@ -14,4 +14,7 @@
     <string name="string_btn_cancel">取消</string>
     <string name="string_account_add_error_tips">请输入账本名称</string>
     <string name="string_wages">工资</string>
+    <string name="string_revenue">收入</string>
+    <string name="string_expenses">支出</string>
+    <string name="string_account_type_common">一般</string>
 </resources>

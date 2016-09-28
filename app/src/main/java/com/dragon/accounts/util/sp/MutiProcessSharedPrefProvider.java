@@ -48,7 +48,7 @@ public class MutiProcessSharedPrefProvider extends ContentProvider {
         sType.put("long", TYPE_LONG);
         sType.put("boolean", TYPE_BOOLEAN);
         sType.put("strings", TYPE_STRINGS);
-        sType.put("strings", TYPE_FLOAT);
+        sType.put("float", TYPE_FLOAT);
     }
 
     @Override

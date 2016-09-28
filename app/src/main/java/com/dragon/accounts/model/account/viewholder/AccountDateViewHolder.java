@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.dragon.accounts.R;
 import com.dragon.accounts.model.account.info.AccountDateInfo;
 import com.dragon.accounts.model.account.info.IAccountInfo;
+import com.dragon.accounts.util.AccountUtil;
 
 public class AccountDateViewHolder extends BaseAccountHolder {
 
@@ -29,7 +30,7 @@ public class AccountDateViewHolder extends BaseAccountHolder {
         if (info == null)
             return;
         layout_account_date_date.setText(info.date);
-        float money = (float) (Math.round(info.money * 100)) / 100;
+        float money = AccountUtil.getAccountFloatMoney(info.money);
         layout_account_date_money.setText(String.valueOf(money));
 
     }

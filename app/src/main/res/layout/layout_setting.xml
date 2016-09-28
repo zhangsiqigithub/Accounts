@@ -124,7 +124,7 @@
                 android:textSize="12dip" />
 
             <TextView
-                android:id="@+id/setting_total_expenses_size"
+                android:id="@+id/setting_total_balance_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"

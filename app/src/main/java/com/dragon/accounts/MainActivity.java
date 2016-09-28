@@ -8,8 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 
 import com.dragon.accounts.adapter.MainViewPagerListAdapter;
-import com.dragon.accounts.fragment.DetailFragment;
 import com.dragon.accounts.fragment.AccountFragment;
+import com.dragon.accounts.fragment.DetailFragment;
 import com.dragon.accounts.model.SettingModel;
 
 import java.util.ArrayList;
@@ -39,6 +39,13 @@ public class MainActivity extends FragmentActivity {
         accountFragment = new AccountFragment(this);
         fragmentList.add(accountFragment);
         fragmentList.add(new DetailFragment(this));
+
+        accountFragment.setAccountFragmentCallback(new AccountFragment.AccountFragmentCallback() {
+            @Override
+            public void onAccountAdded() {
+                mSettingModel.resetData();
+            }
+        });
     }
 
     private void initView() {

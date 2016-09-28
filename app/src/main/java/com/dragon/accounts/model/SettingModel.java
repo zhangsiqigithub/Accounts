@@ -18,8 +18,8 @@ import com.dragon.accounts.adapter.AccountBookListAdapter;
 import com.dragon.accounts.model.accountbook.info.AccountBookInfo;
 import com.dragon.accounts.model.accountbook.info.IAccountBookInfo;
 import com.dragon.accounts.provider.AccountContentProvider;
+import com.dragon.accounts.util.AccountUtil;
 import com.dragon.accounts.util.CompatUtils;
-import com.dragon.accounts.util.LogUtil;
 import com.dragon.accounts.view.AccountAddDialog;
 
 import java.util.ArrayList;
@@ -74,8 +74,14 @@ public class SettingModel implements IAccountBookInfo.Callback {
         initRecyclerView();
         queryAccounts();
 
+        resetData();
+    }
+
+    public void resetData() {
         float totalRevenue = AccountManager.getTotalRevenue(mContext);
         float totalExpenses = AccountManager.getTotalExpenses(mContext);
+        totalRevenue = AccountUtil.getAccountFloatMoney(totalRevenue);
+        totalExpenses = AccountUtil.getAccountFloatMoney(totalExpenses);
 
         setting_total_revenue_size.setText(String.valueOf(totalRevenue));
         setting_total_expenses_size.setText(String.valueOf(totalExpenses));
@@ -86,7 +92,7 @@ public class SettingModel implements IAccountBookInfo.Callback {
         setting_recyclerview = (RecyclerView) view.findViewById(R.id.setting_recyclerview);
         setting_total_revenue_size = (TextView) view.findViewById(R.id.setting_total_revenue_size);
         setting_total_expenses_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
-        setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
+        setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_balance_size);
     }
 
     private void initRecyclerView() {
@@ -167,9 +173,5 @@ public class SettingModel implements IAccountBookInfo.Callback {
         if (mAccountAddDialog != null && mAccountAddDialog.isShowing()) {
             mAccountAddDialog.dismiss();
         }
-    }
-
-    protected void log(String log) {
-        LogUtil.d(getClass().getSimpleName() + "-->" + log);
     }
 }

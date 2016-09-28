@@ -57,7 +57,7 @@
                             android:textSize="12dip" />
 
                         <TextView
-                            android:id="@+id/setting_total_revenue_size"
+                            android:id="@+id/fragment_account_total_revenue_size"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
@@ -81,7 +81,7 @@
                             android:textSize="12dip" />
 
                         <TextView
-                            android:id="@+id/setting_total_expenses_size"
+                            android:id="@+id/fragment_account_total_expenses_size"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"

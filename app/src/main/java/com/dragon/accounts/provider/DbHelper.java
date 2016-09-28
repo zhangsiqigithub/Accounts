@@ -27,7 +27,7 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
         String TABLESQL_ACCOUNT_ITEM = "create table if not exists "
                 + AccountColumns.TABLE_NAME + " ("
                 + AccountColumns._ID + " integer primary key,"
-                + AccountColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
+                + AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
                 + AccountColumns.COLUMNS_NAME + " varchar,"
                 + AccountColumns.COLUMNS_CONTENT + " varchar,"
                 + AccountColumns.COLUMNS_MONEY + " float,"
