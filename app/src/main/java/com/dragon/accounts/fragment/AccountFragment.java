@@ -19,11 +19,11 @@ import com.dragon.accounts.AccountingActivity;
 import com.dragon.accounts.MainActivity;
 import com.dragon.accounts.R;
 import com.dragon.accounts.adapter.AccountFragmentAdapter;
+import com.dragon.accounts.model.AccountBookManager;
 import com.dragon.accounts.model.AccountManager;
 import com.dragon.accounts.model.account.info.AccountDateInfo;
 import com.dragon.accounts.model.account.info.AccountInfo;
 import com.dragon.accounts.model.account.info.IAccountInfo;
-import com.dragon.accounts.provider.AccountContentProvider;
 import com.dragon.accounts.provider.IProivderMetaData;
 import com.dragon.accounts.util.AccountUtil;
 import com.dragon.accounts.util.TimeUtil;
@@ -108,7 +108,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     public void resetData() {
-        mCurrentAccountBookId = AccountManager.getCurrentAccountBookId(mContext);
+        mCurrentAccountBookId = AccountBookManager.getCurrentAccountBookId(mContext);
         new Thread() {
             @Override
             public void run() {
@@ -116,7 +116,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
                 List<IAccountInfo> resultList = new ArrayList<>();
                 List<AccountDateInfo> dateList = new ArrayList<>();
-                List<AccountInfo> accountList = AccountContentProvider.queryAccounts(mContext, mCurrentAccountBookId);
+                List<AccountInfo> accountList = AccountManager.queryAllAccounts(mContext, mCurrentAccountBookId);
 
                 float totalRevenue = 0.0f;
                 float totaExpenses = 0.0f;
@@ -184,7 +184,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.fragment_account_add:
                 AccountingActivity.start(getActivity(), REQUEST_CODE);
-                AccountContentProvider.insertAccount(mContext, "用餐", "早饭", 100.05f, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
+                AccountManager.insertAccount(mContext, "用餐", "早饭", 100.05f, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
                 break;
             case R.id.fragment_account_hint:
 

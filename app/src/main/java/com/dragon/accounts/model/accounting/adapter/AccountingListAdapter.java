@@ -1,31 +1,46 @@
 package com.dragon.accounts.model.accounting.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.dragon.accounts.model.accounting.AccountingListFactory;
 import com.dragon.accounts.model.accounting.info.AccountIconInfo;
+import com.dragon.accounts.model.accounting.viewholder.IAccountingViewHolder;
 
 import java.util.List;
 
 public class AccountingListAdapter extends RecyclerView.Adapter {
 
-    private Context mContext;
     private List<AccountIconInfo> list;
 
-    public AccountingListAdapter(Context context, List<AccountIconInfo> list) {
-        this.mContext = context;
+    public AccountingListAdapter(List<AccountIconInfo> list) {
         this.list = list;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        return AccountingListFactory.getHolder(parent.getContext(), viewType);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder == null)
+            return;
+        IAccountingViewHolder iAccountingViewHolder = (IAccountingViewHolder) holder;
+        if (iAccountingViewHolder == null)
+            return;
+        if (list == null && position < 0 && position >= list.size())
+            return;
+        iAccountingViewHolder.buildView(list.get(position));
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (list != null && position >= 0 && position < list.size()) {
+            return list.get(position).iconId;
+        }
+
+        return super.getItemViewType(position);
     }
 
     @Override

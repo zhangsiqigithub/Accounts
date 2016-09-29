@@ -14,7 +14,7 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String TABLESQL_ACCOUNT = "create table if not exists "
+        String TABLESQL_ACCOUNT_BOOK = "create table if not exists "
                 + AccountBookColumns.TABLE_NAME + " ("
                 + AccountBookColumns._ID + " integer primary key,"
                 + AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
@@ -22,9 +22,9 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
                 + AccountBookColumns.COLUMNS_SIZE + " integer,"
                 + AccountBookColumns.COLUMNS_COLOR_POSITION + " integer"
                 + ")";
-        db.execSQL(TABLESQL_ACCOUNT);
+        db.execSQL(TABLESQL_ACCOUNT_BOOK);
 
-        String TABLESQL_ACCOUNT_ITEM = "create table if not exists "
+        String TABLESQL_ACCOUNT = "create table if not exists "
                 + AccountColumns.TABLE_NAME + " ("
                 + AccountColumns._ID + " integer primary key,"
                 + AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
@@ -34,7 +34,15 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
                 + AccountColumns.COLUMNS_ACCOUNT_TYPE + " integer,"
                 + AccountColumns.COLUMNS_DATE + " long"
                 + ")";
-        db.execSQL(TABLESQL_ACCOUNT_ITEM);
+        db.execSQL(TABLESQL_ACCOUNT);
+
+        String TABLESQL_ACCOUNT_ICON = "create table if not exists "
+                + AccountIconColumns.TABLE_NAME + " ("
+                + AccountIconColumns._ID + " integer primary key,"
+                + AccountIconColumns.COLUMNS_ICON_ID + " integer,"
+                + AccountIconColumns.COLUMNS_ICON_NAME + " varchar"
+                + ")";
+        db.execSQL(TABLESQL_ACCOUNT_ICON);
     }
 
     @Override
@@ -43,6 +51,7 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
                 + " to " + newVersion + ", destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + AccountBookColumns.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + AccountColumns.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + AccountIconColumns.TABLE_NAME);
         onCreate(db);
     }
 

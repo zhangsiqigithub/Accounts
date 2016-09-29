@@ -17,7 +17,6 @@ import com.dragon.accounts.R;
 import com.dragon.accounts.adapter.AccountBookListAdapter;
 import com.dragon.accounts.model.accountbook.info.AccountBookInfo;
 import com.dragon.accounts.model.accountbook.info.IAccountBookInfo;
-import com.dragon.accounts.provider.AccountContentProvider;
 import com.dragon.accounts.util.AccountUtil;
 import com.dragon.accounts.util.CompatUtils;
 import com.dragon.accounts.view.AccountAddDialog;
@@ -113,7 +112,7 @@ public class SettingModel implements IAccountBookInfo.Callback {
             @Override
             public void run() {
                 super.run();
-                List<IAccountBookInfo> bookList = AccountContentProvider.queryAccountBooks(mContext, SettingModel.this);
+                List<IAccountBookInfo> bookList = AccountBookManager.queryAccountBook(mContext, SettingModel.this);
                 list.clear();
                 list.addAll(bookList);
                 mHandler.sendEmptyMessage(MSG_UPDATE);
@@ -132,7 +131,7 @@ public class SettingModel implements IAccountBookInfo.Callback {
         switch (type) {
             case IAccountBookInfo.TYPE_ACCOUNT_BOOK:
                 AccountBookInfo accountBookInfo = (AccountBookInfo) list.get(position);
-                AccountManager.setCurrentAccountBookId(mContext, accountBookInfo.accountBookId);
+                AccountBookManager.setCurrentAccountBookId(mContext, accountBookInfo.accountBookId);
                 if (mSettingModelCallback != null) {
                     mSettingModelCallback.onAccountSelect();
                 }
@@ -153,7 +152,7 @@ public class SettingModel implements IAccountBookInfo.Callback {
                     if (TextUtils.isEmpty(name)) {
                         Toast.makeText(mContext.getApplicationContext(), mContext.getString(R.string.string_account_add_error_tips), Toast.LENGTH_SHORT).show();
                     } else {
-                        AccountContentProvider.insertAccountBooks(mContext, name.trim(), 0, colorPosition);
+                        AccountBookManager.insertAccountBook(mContext, name.trim(), 0, colorPosition);
                         queryAccounts();
                         dialog.dismiss();
                     }

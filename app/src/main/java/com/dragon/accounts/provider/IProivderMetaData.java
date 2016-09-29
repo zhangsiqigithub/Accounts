@@ -16,7 +16,7 @@ public interface IProivderMetaData {
     /**
      * 数据库版本
      */
-    int VERSION = 2;
+    int VERSION = 1;
 
     /**
      * 账本
@@ -26,7 +26,7 @@ public interface IProivderMetaData {
         // 表名
         String TABLE_NAME = "accountBooks";
 
-        // 外部程序访问本表的uri地址：登录
+        // 外部程序访问本表的uri地址：
         Uri URI_ACCOUNT_BOOK = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
 
         // 表列名
@@ -36,7 +36,7 @@ public interface IProivderMetaData {
         String COLUMNS_COLOR_POSITION = "color_position";// 账本颜色id
 
         //该ContentProvider所返回的数据类型的定义
-        String CONTENT_TYPE = "vnd.android.cursor.dir/account_books";
+        String CONTENT_BOOK = "vnd.android.cursor.dir/account_books";
     }
 
     /**
@@ -47,7 +47,7 @@ public interface IProivderMetaData {
         // 表名
         String TABLE_NAME = "accounts";
 
-        // 外部程序访问本表的uri地址：登录
+        // 外部程序访问本表的uri地址：
         Uri URI_ACCOUNT = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
 
         // 表列名
@@ -58,7 +58,25 @@ public interface IProivderMetaData {
         String COLUMNS_DATE = "date";// 日期
 
         //该ContentProvider所返回的数据类型的定义
-        String CONTENT_TYPE_ITEM = "vnd.android.cursor.item/accounts";
+        String CONTENT = "vnd.android.cursor.item/accounts";
+    }
+
+    /**
+     * 每一个账单图标类型和名称
+     */
+    interface AccountIconColumns extends BaseColumns {
+
+        // 表名
+        String TABLE_NAME = "accountIcons";
+
+        // 外部程序访问本表的uri地址：
+        Uri URI_ACCOUNT_ICON = Uri.parse("content://" + AUTHORITY_ACCOUNT + "/" + TABLE_NAME);
+
+        String COLUMNS_ICON_ID = "icon_id";
+        String COLUMNS_ICON_NAME = "icon_name";
+
+        //该ContentProvider所返回的数据类型的定义
+        String CONTENT_ICON = "vnd.android.cursor.item/account_icons";
     }
 
 }

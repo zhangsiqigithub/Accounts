@@ -1,8 +1,15 @@
 package com.dragon.accounts.model;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
+import com.dragon.accounts.model.account.info.AccountInfo;
+import com.dragon.accounts.provider.IProivderMetaData;
 import com.dragon.accounts.util.sp.SharedPref;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountManager {
 
@@ -11,27 +18,6 @@ public class AccountManager {
 
     private static final String KEY_TOTAL_REVENUE = "key_total_revenue";
     private static final String KEY_TOTAL_EXPENSES = "key_total_expenses";
-
-    public static final int DEFAULT_ACCOUNT_BOOK_ID = 1;
-
-    private static final String KEY_ACCOUNT_BOOK_SIZE = "key_account_book_id";// 当前已创建过的账本数量
-    private static final String KEY_CURRENT_ACCOUNT_BOOK_ID = "key_current_account_book_id";// 当前已创建过的账本数量
-
-    public static int getAccountBookSize(Context context) {
-        return SharedPref.getInt(context, KEY_ACCOUNT_BOOK_SIZE, 0);
-    }
-
-    public static void setAccountBookSize(Context context, int size) {
-        SharedPref.setInt(context, KEY_ACCOUNT_BOOK_SIZE, size);
-    }
-
-    public static int getCurrentAccountBookId(Context context) {
-        return SharedPref.getInt(context, KEY_CURRENT_ACCOUNT_BOOK_ID, DEFAULT_ACCOUNT_BOOK_ID);
-    }
-
-    public static void setCurrentAccountBookId(Context context, int accountBookId) {
-        SharedPref.setInt(context, KEY_CURRENT_ACCOUNT_BOOK_ID, accountBookId);
-    }
 
     public static void setTotalRevenue(Context context, float money) {
         SharedPref.setFloat(context, KEY_TOTAL_REVENUE, getTotalRevenue(context) + money);
@@ -47,5 +33,68 @@ public class AccountManager {
 
     public static float getTotalExpenses(Context context) {
         return SharedPref.getFloat(context, KEY_TOTAL_EXPENSES, 0);
+    }
+
+    public static void insertAccount(Context context, String name, String content, float money, int accountType, int accountBookId) {
+        if (context == null)
+            return;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID, accountBookId);
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_NAME, name);
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_CONTENT, content);
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_MONEY, money);
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE, accountType);
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_DATE, System.currentTimeMillis());
+        context.getContentResolver().insert(IProivderMetaData.AccountColumns.URI_ACCOUNT, contentValues);
+        switch (accountType) {
+            case ACCOUNT_TYPE_REVENUE:
+                setTotalRevenue(context, money);
+                break;
+            case ACCOUNT_TYPE_EXPENSES:
+                setTotalExpenses(context, money);
+                break;
+        }
+    }
+
+    public static List<AccountInfo> queryAllAccounts(Context context, int currentAccountBookId) {
+        List<AccountInfo> tempList = new ArrayList<>();
+        Cursor query = context.getContentResolver().query(
+                IProivderMetaData.AccountColumns.URI_ACCOUNT,
+                null,
+                IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + "=?",
+                new String[]{String.valueOf(currentAccountBookId)},
+                IProivderMetaData.AccountColumns.COLUMNS_DATE);
+        while (query != null && query.moveToNext()) {
+            int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns._ID));
+            String title = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_NAME));
+            String content = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_CONTENT));
+            float money = query.getFloat(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_MONEY));
+            int accountType = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE));
+            long date = query.getLong(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_DATE));
+
+            AccountInfo info = new AccountInfo();
+            info.id = id;
+            info.title = title;
+            info.content = content;
+            info.money = money;
+            info.accountType = accountType;
+            info.date = date;
+            tempList.add(info);
+        }
+        return tempList;
+    }
+
+    public static int getAccountsCount(Context context, long accountBookId) {
+        Cursor cursor = context.getContentResolver().query(
+                IProivderMetaData.AccountColumns.URI_ACCOUNT,
+                null,
+                IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + "=?",
+                new String[]{String.valueOf(accountBookId)},
+                null);
+        int size = 0;
+        if (cursor != null) {
+            size = cursor.getCount();
+        }
+        return size;
     }
 }

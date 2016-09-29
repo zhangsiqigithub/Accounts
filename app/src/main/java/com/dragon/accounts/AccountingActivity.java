@@ -10,11 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dragon.accounts.model.AccountIconManager;
+import com.dragon.accounts.model.AccountManager;
 import com.dragon.accounts.model.accounting.adapter.AccountingListAdapter;
 import com.dragon.accounts.model.accounting.info.AccountIconInfo;
 import com.dragon.accounts.util.LogUtil;
 import com.dragon.accounts.view.CalculatorView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountingActivity extends Activity implements View.OnClickListener {
@@ -45,7 +48,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
             switch (msg.what) {
                 case MSG_UPDATE:
                     if (mAccountingListAdapter == null) {
-                        mAccountingListAdapter = new AccountingListAdapter(getApplicationContext(), list);
+                        mAccountingListAdapter = new AccountingListAdapter(list);
                         layout_accounting_recyclerview.setAdapter(mAccountingListAdapter);
                     } else {
                         mAccountingListAdapter.notifyDataSetChanged();
@@ -79,7 +82,20 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     }
 
     private void initData() {
-
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                List<AccountIconInfo> accountIconInfos = AccountIconManager.queryAllAccountIcons(getApplicationContext());
+                accountIconInfos.add(new AccountIconInfo(-1, AccountIconManager.ICON_ID_ADD, getString(R.string.string_icon_id_add)));
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
+                list.clear();
+                list.addAll(accountIconInfos);
+                mHandler.sendEmptyMessage(MSG_UPDATE);
+            }
+        }.start();
     }
 
     private void initView() {

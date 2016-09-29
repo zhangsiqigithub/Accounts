@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="string_icon_id_common">一般</string>
+    <string name="string_icon_id_add">编辑</string>
+
+</resources>
