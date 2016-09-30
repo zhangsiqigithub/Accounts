@@ -23,6 +23,7 @@ public class MainActivity extends FragmentActivity {
     private SettingModel mSettingModel;
 
     private AccountFragment accountFragment;
+    private DetailFragment detailFragment;
     private List<Fragment> fragmentList;
 
     @Override
@@ -38,7 +39,8 @@ public class MainActivity extends FragmentActivity {
         fragmentList = new ArrayList<>();
         accountFragment = new AccountFragment(this);
         fragmentList.add(accountFragment);
-        fragmentList.add(new DetailFragment(this));
+        detailFragment = new DetailFragment(this);
+        fragmentList.add(detailFragment);
 
         accountFragment.setAccountFragmentCallback(new AccountFragment.AccountFragmentCallback() {
             @Override

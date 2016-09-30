@@ -77,14 +77,14 @@ public class SettingModel implements IAccountBookInfo.Callback {
     }
 
     public void resetData() {
-        float totalRevenue = AccountManager.getTotalRevenue(mContext);
-        float totalExpenses = AccountManager.getTotalExpenses(mContext);
-        totalRevenue = AccountUtil.getAccountFloatMoney(totalRevenue);
-        totalExpenses = AccountUtil.getAccountFloatMoney(totalExpenses);
+        double totalRevenue = AccountManager.getTotalRevenue(mContext);
+        double totalExpenses = AccountManager.getTotalExpenses(mContext);
+        String totalRevenueStr = AccountUtil.getAccountMoney(totalRevenue);
+        String totalExpensesStr = AccountUtil.getAccountMoney(totalExpenses);
 
-        setting_total_revenue_size.setText(String.valueOf(totalRevenue));
-        setting_total_expenses_size.setText(String.valueOf(totalExpenses));
-        setting_total_balance_size.setText(String.valueOf(Math.max(totalRevenue - totalExpenses, 0.0f)));
+        setting_total_revenue_size.setText(totalRevenueStr);
+        setting_total_expenses_size.setText(totalExpensesStr);
+        setting_total_balance_size.setText(AccountUtil.getAccountMoney(totalRevenue - totalExpenses));
     }
 
     private void initView(View view) {

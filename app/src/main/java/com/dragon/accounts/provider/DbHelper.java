@@ -30,7 +30,7 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
                 + AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
                 + AccountColumns.COLUMNS_NAME + " varchar,"
                 + AccountColumns.COLUMNS_CONTENT + " varchar,"
-                + AccountColumns.COLUMNS_MONEY + " float,"
+                + AccountColumns.COLUMNS_MONEY + " double,"
                 + AccountColumns.COLUMNS_ACCOUNT_TYPE + " integer,"
                 + AccountColumns.COLUMNS_DATE + " long"
                 + ")";

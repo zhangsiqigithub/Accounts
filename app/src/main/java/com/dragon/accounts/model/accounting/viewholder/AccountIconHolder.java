@@ -1,7 +1,6 @@
 package com.dragon.accounts.model.accounting.viewholder;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,20 +8,34 @@ import android.widget.TextView;
 import com.dragon.accounts.R;
 import com.dragon.accounts.model.accounting.info.AccountIconInfo;
 
-public class AccountIconHolder extends BaseAccountingHolder implements IAccountingViewHolder {
+public class AccountIconHolder extends BaseAccountingHolder implements IAccountingViewHolder, View.OnClickListener {
 
+    private View layout_account_icon_parent;
     private ImageView layout_account_icon_img;
     private TextView layout_account_icon_text;
+    private AccountIconInfo item;
 
     public AccountIconHolder(Context context, View itemView) {
         super(context, itemView);
+        layout_account_icon_parent = itemView.findViewById(R.id.layout_account_icon_parent);
         layout_account_icon_img = (ImageView) itemView.findViewById(R.id.layout_account_icon_img);
         layout_account_icon_text = (TextView) itemView.findViewById(R.id.layout_account_icon_text);
     }
 
     @Override
     public void buildView(AccountIconInfo item) {
+        if (item == null)
+            return;
+        this.item = item;
         layout_account_icon_img.setImageResource(item.iconId);
         layout_account_icon_text.setText(item.name);
+        layout_account_icon_parent.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (item != null && item.mAccountingCallback != null) {
+            item.mAccountingCallback.onClick(getAdapterPosition());
+        }
     }
 }

@@ -1,8 +1,6 @@
 package com.dragon.accounts.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -71,8 +69,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                     break;
                 case MSG_UPDATE_ACCOUNT_MONEY:
                     Bundle bundle = msg.getData();
-                    setting_total_revenue_size.setText(String.valueOf(AccountUtil.getAccountFloatMoney(bundle.getFloat(KEY_ACCOUNT_REVENUE))));
-                    setting_total_balance_size.setText(String.valueOf(AccountUtil.getAccountFloatMoney(bundle.getFloat(KEY_ACCOUNT_EXPENSES))));
+                    setting_total_revenue_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_REVENUE)));
+                    setting_total_balance_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_EXPENSES)));
                     fragment_account_title.setText(String.valueOf(bundle.getString(KEY_ACCOUNT_NAME)));
                     break;
             }
@@ -98,13 +96,17 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         view.findViewById(R.id.fragment_account_menu_bg).setOnClickListener(this);
         home_hint.setOnClickListener(this);
 
-        resetData();
-
         return view;
     }
 
     public void setAccountFragmentCallback(AccountFragmentCallback accountFragmentCallback) {
         this.mAccountFragmentCallback = accountFragmentCallback;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        resetData();
     }
 
     public void resetData() {
@@ -118,8 +120,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 List<AccountDateInfo> dateList = new ArrayList<>();
                 List<AccountInfo> accountList = AccountManager.queryAllAccounts(mContext, mCurrentAccountBookId);
 
-                float totalRevenue = 0.0f;
-                float totaExpenses = 0.0f;
+                double totalRevenue = 0;
+                double totaExpenses = 0;
                 String date = null;
                 AccountDateInfo dateInfo = null;
                 for (AccountInfo info : accountList) {
@@ -164,8 +166,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 Message msg = Message.obtain();
                 msg.what = MSG_UPDATE_ACCOUNT_MONEY;
                 Bundle bundle = new Bundle();
-                bundle.putFloat(KEY_ACCOUNT_REVENUE, totalRevenue);
-                bundle.putFloat(KEY_ACCOUNT_EXPENSES, totaExpenses);
+                bundle.putDouble(KEY_ACCOUNT_REVENUE, totalRevenue);
+                bundle.putDouble(KEY_ACCOUNT_EXPENSES, totaExpenses);
                 bundle.putString(KEY_ACCOUNT_NAME, name);
                 msg.setData(bundle);
                 mHandler.sendMessage(msg);
@@ -177,14 +179,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
-    private static final int REQUEST_CODE = 1001;
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fragment_account_add:
-                AccountingActivity.start(getActivity(), REQUEST_CODE);
-                AccountManager.insertAccount(mContext, "用餐", "早饭", 100.05f, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
+                AccountingActivity.start(getActivity());
+//                AccountManager.insertAccount(mContext, "用餐", "早饭", 100.05f, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
                 break;
             case R.id.fragment_account_hint:
 
@@ -192,16 +192,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
             case R.id.fragment_account_menu_bg:
                 ((MainActivity) getActivity()).openDrawer();
                 break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE == requestCode) {
-            if (resultCode == Activity.RESULT_OK) {
-                resetData();
-            }
         }
     }
 }

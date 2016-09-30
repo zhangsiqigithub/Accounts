@@ -30,8 +30,7 @@ public class AccountDateViewHolder extends BaseAccountHolder {
         if (info == null)
             return;
         layout_account_date_date.setText(info.date);
-        float money = AccountUtil.getAccountFloatMoney(info.money);
-        layout_account_date_money.setText(String.valueOf(money));
+        layout_account_date_money.setText(AccountUtil.getAccountMoney(info.money));
 
     }
 }

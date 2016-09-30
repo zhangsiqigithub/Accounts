@@ -19,23 +19,23 @@ public class AccountManager {
     private static final String KEY_TOTAL_REVENUE = "key_total_revenue";
     private static final String KEY_TOTAL_EXPENSES = "key_total_expenses";
 
-    public static void setTotalRevenue(Context context, float money) {
-        SharedPref.setFloat(context, KEY_TOTAL_REVENUE, getTotalRevenue(context) + money);
+    public static void setTotalRevenue(Context context, double money) {
+        SharedPref.setString(context, KEY_TOTAL_REVENUE, String.valueOf(getTotalRevenue(context) + money));
     }
 
-    public static float getTotalRevenue(Context context) {
-        return SharedPref.getFloat(context, KEY_TOTAL_REVENUE, 0);
+    public static double getTotalRevenue(Context context) {
+        return Double.valueOf(SharedPref.getString(context, KEY_TOTAL_REVENUE, "0"));
     }
 
-    public static void setTotalExpenses(Context context, float money) {
-        SharedPref.setFloat(context, KEY_TOTAL_EXPENSES, getTotalExpenses(context) + money);
+    public static void setTotalExpenses(Context context, double money) {
+        SharedPref.setString(context, KEY_TOTAL_EXPENSES, String.valueOf(getTotalExpenses(context) + money));
     }
 
-    public static float getTotalExpenses(Context context) {
-        return SharedPref.getFloat(context, KEY_TOTAL_EXPENSES, 0);
+    public static double getTotalExpenses(Context context) {
+        return Double.valueOf(SharedPref.getString(context, KEY_TOTAL_EXPENSES, "0"));
     }
 
-    public static void insertAccount(Context context, String name, String content, float money, int accountType, int accountBookId) {
+    public static void insertAccount(Context context, String name, String content, double money, int accountType, int accountBookId) {
         if (context == null)
             return;
         ContentValues contentValues = new ContentValues();
@@ -68,7 +68,7 @@ public class AccountManager {
             int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns._ID));
             String title = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_NAME));
             String content = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_CONTENT));
-            float money = query.getFloat(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_MONEY));
+            double money = query.getDouble(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_MONEY));
             int accountType = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE));
             long date = query.getLong(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_DATE));
 

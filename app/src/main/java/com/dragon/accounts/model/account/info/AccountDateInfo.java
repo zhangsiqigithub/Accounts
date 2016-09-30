@@ -3,7 +3,7 @@ package com.dragon.accounts.model.account.info;
 public class AccountDateInfo implements IAccountInfo {
 
     public String date;
-    public float money;
+    public double money;
 
     @Override
     public int getType() {

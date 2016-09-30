@@ -41,7 +41,7 @@ public class AccountViewHolder extends BaseAccountHolder {
     @Override
     public void buildView(IAccountInfo item) {
         info = (AccountInfo) item;
-        float money = AccountUtil.getAccountFloatMoney(info.money);
+        String money = AccountUtil.getAccountMoney(info.money);
         switch (info.accountType) {
             case AccountManager.ACCOUNT_TYPE_REVENUE:
                 fragment_account_layout_left.setVisibility(View.VISIBLE);

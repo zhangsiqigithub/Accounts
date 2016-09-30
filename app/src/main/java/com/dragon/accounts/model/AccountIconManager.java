@@ -35,6 +35,14 @@ public class AccountIconManager {
         return name;
     }
 
+    public static int getTitleIconIdByIconId(int iconId) {
+        switch (iconId) {
+            case ICON_ID_COMMON:
+                return R.mipmap.icon_star_white;
+        }
+        return 0;
+    }
+
     public static void insertAccountIcon(Context context, int iconId, String name) {
         if (context == null)
             return;
@@ -44,7 +52,7 @@ public class AccountIconManager {
         context.getContentResolver().insert(IProivderMetaData.AccountIconColumns.URI_ACCOUNT_ICON, contentValues);
     }
 
-    public static List<AccountIconInfo> queryAllAccountIcons(Context context) {
+    public static List<AccountIconInfo> queryAllAccountIcons(Context context, AccountIconInfo.AccountingCallback callback) {
         List<AccountIconInfo> list = new ArrayList<>();
         Cursor query = context.getContentResolver().query(
                 IProivderMetaData.AccountIconColumns.URI_ACCOUNT_ICON, null, null, null, null);
@@ -52,7 +60,7 @@ public class AccountIconManager {
             int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountIconColumns._ID));
             int iconId = query.getInt(query.getColumnIndex(IProivderMetaData.AccountIconColumns.COLUMNS_ICON_ID));
             String iconName = query.getString(query.getColumnIndex(IProivderMetaData.AccountIconColumns.COLUMNS_ICON_NAME));
-            list.add(new AccountIconInfo(id, iconId, iconName));
+            list.add(new AccountIconInfo(id, iconId, iconName, callback));
         }
         return list;
     }

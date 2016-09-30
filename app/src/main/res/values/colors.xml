@@ -13,5 +13,6 @@
     <color name="color_accounting_calculator_ok_normal">@android:color/transparent</color>
     <color name="color_aa444444">#aa444444</color>
     <color name="color_aeaeae">#aeaeae</color>
+    <color name="color_layout_accounting_btn_selected">#444444</color>
 
 </resources>
