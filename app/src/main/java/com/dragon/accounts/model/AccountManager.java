@@ -35,7 +35,7 @@ public class AccountManager {
         return Double.valueOf(SharedPref.getString(context, KEY_TOTAL_EXPENSES, "0"));
     }
 
-    public static void insertAccount(Context context, String name, String content, double money, int accountType, int accountBookId) {
+    public static void insertAccount(Context context, String name, String content, double money, int accountType, int accountBookId, long date) {
         if (context == null)
             return;
         ContentValues contentValues = new ContentValues();
@@ -44,7 +44,7 @@ public class AccountManager {
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_CONTENT, content);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_MONEY, money);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE, accountType);
-        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_DATE, System.currentTimeMillis());
+        contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_DATE, date);
         context.getContentResolver().insert(IProivderMetaData.AccountColumns.URI_ACCOUNT, contentValues);
         switch (accountType) {
             case ACCOUNT_TYPE_REVENUE:

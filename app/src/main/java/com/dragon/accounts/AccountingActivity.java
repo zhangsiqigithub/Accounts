@@ -19,6 +19,7 @@ import com.dragon.accounts.model.AccountManager;
 import com.dragon.accounts.model.accounting.adapter.AccountingListAdapter;
 import com.dragon.accounts.model.accounting.info.AccountIconInfo;
 import com.dragon.accounts.view.CalculatorView;
+import com.dragon.accounts.view.CalendarDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,6 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         }
     }
 
-
     private static final int SPAN_COUNT = 6;
 
     private TextView layout_accounting_text_money;
@@ -43,12 +43,18 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     private RecyclerView layout_accounting_recyclerview;
     private ImageView layout_accounting_icon_img;
     private TextView layout_accounting_icon_title;
+    private TextView layout_accounting_date_year;
+    private TextView layout_accounting_date_mount_day;
+    private TextView layout_accounting_date_content;
+    private ImageView layout_accounting_date_content_btn;
 
     private AccountingListAdapter mAccountingListAdapter;
     private int accountType = AccountManager.ACCOUNT_TYPE_EXPENSES;
 
     private List<AccountIconInfo> list;
     private int mCurrentSelectIndex;
+    private CalendarDialog mCalandarDialog;
+    private long mTimeLong;
 
     private static final int MSG_UPDATE = 1;
     private Handler mHandler = new Handler() {
@@ -92,8 +98,23 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                         "",
                         result,
                         accountType,
-                        AccountBookManager.getCurrentAccountBookId(getApplicationContext()));
+                        AccountBookManager.getCurrentAccountBookId(getApplicationContext()), mTimeLong);
                 finish();
+            }
+        });
+
+        mCalandarDialog = new CalendarDialog(this);
+        mCalandarDialog.setCalendarDialogCallback(new CalendarDialog.CalendarDialogCallback() {
+            @Override
+            public void onDateSelected(String year, String mounthAndDay, long time) {
+                mTimeLong = time;
+                if (layout_accounting_date_year != null) {
+                    layout_accounting_date_year.setText(year);
+                }
+                if (layout_accounting_date_mount_day != null) {
+                    layout_accounting_date_mount_day.setText(mounthAndDay);
+                }
+                mCalandarDialog.dismiss();
             }
         });
     }
@@ -148,8 +169,13 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         layout_accounting_recyclerview = (RecyclerView) findViewById(R.id.layout_accounting_recyclerview);
         layout_accounting_icon_img = (ImageView) findViewById(R.id.layout_accounting_icon_img);
         layout_accounting_icon_title = (TextView) findViewById(R.id.layout_accounting_icon_title);
+        layout_accounting_date_year = (TextView) findViewById(R.id.layout_accounting_date_year);
+        layout_accounting_date_mount_day = (TextView) findViewById(R.id.layout_accounting_date_mount_day);
+        layout_accounting_date_content = (TextView) findViewById(R.id.layout_accounting_date_content);
+        layout_accounting_date_content_btn = (ImageView) findViewById(R.id.layout_accounting_date_content_btn);
 
         findViewById(R.id.layout_account_back_btn).setOnClickListener(this);
+        findViewById(R.id.layout_accounting_date_parent).setOnClickListener(this);
         layout_accounting_btn_revenue.setOnClickListener(this);
         layout_accounting_btn_expenses.setOnClickListener(this);
 
@@ -177,7 +203,27 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                 layout_accounting_btn_expenses.setAlpha(1f);
                 accountType = AccountManager.ACCOUNT_TYPE_EXPENSES;
                 break;
+            case R.id.layout_accounting_date_parent:
+                showCalandarDialog();
+                break;
         }
+    }
 
+    private void showCalandarDialog() {
+        cancelCalandarDialog();
+        mCalandarDialog.show();
+    }
+
+    private void cancelCalandarDialog() {
+        if (mCalandarDialog != null && mCalandarDialog.isShowing()) {
+            mCalandarDialog.cancel();
+//            mCalandarDialog = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cancelCalandarDialog();
     }
 }

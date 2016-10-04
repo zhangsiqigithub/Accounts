@@ -107,28 +107,60 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dip"
+        android:layout_height="48dip"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/layout_accounting_date_parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dip"
-            android:gravity="center_horizontal"
-            android:text="2016\n今天"
-            android:textColor="@color/color_line"
-            android:textSize="10dip" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="16dip"
+            android:paddingRight="16dip">
 
-        <View
+            <TextView
+                android:id="@+id/layout_accounting_date_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="2016"
+                android:textColor="@color/color_aa444444"
+                android:textSize="10dip" />
+
+            <TextView
+                android:id="@+id/layout_accounting_date_mount_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="9月16日"
+                android:textColor="@color/color_aa444444"
+                android:textSize="12dip" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/layout_accounting_date_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="@string/string_accounting_content_hint"
+            android:paddingLeft="16dip"
+            android:paddingRight="16dip"
+            android:singleLine="true"
+            android:textColor="@color/color_aa444444"
+            android:textColorHint="#44444444"
+            android:textSize="14dip" />
 
         <ImageView
-            android:layout_width="24dip"
-            android:layout_height="24dip"
-            android:layout_marginRight="10dip"
+            android:id="@+id/layout_accounting_date_content_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dip"
+            android:paddingRight="16dip"
             android:src="@mipmap/icon_input" />
     </LinearLayout>
 

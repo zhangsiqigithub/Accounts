@@ -17,4 +17,8 @@
     <string name="string_revenue">收入</string>
     <string name="string_expenses">支出</string>
     <string name="string_account_type_common">一般</string>
+    <string name="calendar">Calendar</string>
+    <string name="previous">Go to previous</string>
+    <string name="next">Go to next</string>
+    <string name="string_accounting_content_hint">备注</string>
 </resources>
