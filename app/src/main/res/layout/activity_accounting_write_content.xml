@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/accounting_write_content_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_background"
+            android:padding="15dip"
+            android:src="@mipmap/icon_close_aeaeae" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/string_accounting_write_content_remark"
+            android:textColor="#444444"
+            android:textSize="14dip" />
+
+
+        <TextView
+            android:id="@+id/accounting_write_content_finish"
+            android:layout_width="48dip"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_background"
+            android:gravity="center"
+            android:text="@string/string_finish"
+            android:textColor="#fa9b3d" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_gravity="bottom"
+        android:background="@color/color_line" />
+
+    <EditText
+        android:id="@+id/accounting_write_content_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:gravity="start|top"
+        android:hint="@string/string_accounting_write_content_hint"
+        android:padding="10dip"
+        android:textColor="#444444"
+        android:textSize="14dip" />
+
+</LinearLayout>

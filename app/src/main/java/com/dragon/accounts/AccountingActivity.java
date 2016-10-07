@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +22,10 @@ import com.dragon.accounts.model.accounting.info.AccountIconInfo;
 import com.dragon.accounts.view.CalculatorView;
 import com.dragon.accounts.view.CalendarDialog;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AccountingActivity extends Activity implements View.OnClickListener {
@@ -34,6 +38,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         }
     }
 
+    private static final int REQ_CODE = 100;
     private static final int SPAN_COUNT = 6;
 
     private TextView layout_accounting_text_money;
@@ -54,7 +59,9 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     private List<AccountIconInfo> list;
     private int mCurrentSelectIndex;
     private CalendarDialog mCalandarDialog;
-    private long mTimeLong;
+    private final DateFormat mFormatter_year = new SimpleDateFormat("yyyy");
+    private final DateFormat mFormatter_mounth_day = new SimpleDateFormat("MM月dd日");
+    private long mTimeLong = System.currentTimeMillis();
 
     private static final int MSG_UPDATE = 1;
     private Handler mHandler = new Handler() {
@@ -77,7 +84,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_accounting);
+        setContentView(R.layout.activity_accounting);
         init();
     }
 
@@ -95,7 +102,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                 AccountIconInfo info = list.get(mCurrentSelectIndex);
                 AccountManager.insertAccount(getApplicationContext(),
                         info.name,
-                        "",
+                        layout_accounting_date_content.getText().toString(),
                         result,
                         accountType,
                         AccountBookManager.getCurrentAccountBookId(getApplicationContext()), mTimeLong);
@@ -106,17 +113,23 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         mCalandarDialog = new CalendarDialog(this);
         mCalandarDialog.setCalendarDialogCallback(new CalendarDialog.CalendarDialogCallback() {
             @Override
-            public void onDateSelected(String year, String mounthAndDay, long time) {
+            public void onDateSelected(long time) {
                 mTimeLong = time;
-                if (layout_accounting_date_year != null) {
-                    layout_accounting_date_year.setText(year);
-                }
-                if (layout_accounting_date_mount_day != null) {
-                    layout_accounting_date_mount_day.setText(mounthAndDay);
-                }
+                resetDate();
                 mCalandarDialog.dismiss();
             }
         });
+        resetDate();
+    }
+
+    private void resetDate() {
+        Date tempDate = new Date(mTimeLong);
+        if (layout_accounting_date_year != null) {
+            layout_accounting_date_year.setText(mFormatter_year.format(tempDate));
+        }
+        if (layout_accounting_date_mount_day != null) {
+            layout_accounting_date_mount_day.setText(mFormatter_mounth_day.format(tempDate));
+        }
     }
 
     private AccountIconInfo.AccountingCallback mAccountingCallback = new AccountIconInfo.AccountingCallback() {
@@ -176,6 +189,8 @@ public class AccountingActivity extends Activity implements View.OnClickListener
 
         findViewById(R.id.layout_account_back_btn).setOnClickListener(this);
         findViewById(R.id.layout_accounting_date_parent).setOnClickListener(this);
+        findViewById(R.id.layout_accounting_date_content_btn).setOnClickListener(this);
+        findViewById(R.id.layout_accounting_date_content).setOnClickListener(this);
         layout_accounting_btn_revenue.setOnClickListener(this);
         layout_accounting_btn_expenses.setOnClickListener(this);
 
@@ -206,6 +221,10 @@ public class AccountingActivity extends Activity implements View.OnClickListener
             case R.id.layout_accounting_date_parent:
                 showCalandarDialog();
                 break;
+            case R.id.layout_accounting_date_content_btn:
+            case R.id.layout_accounting_date_content:
+                AccountingWriteCoutentActivity.start(this, null, REQ_CODE);
+                break;
         }
     }
 
@@ -225,5 +244,16 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     protected void onPause() {
         super.onPause();
         cancelCalandarDialog();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_CODE && resultCode == RESULT_OK) {
+            String stringExtra = data.getStringExtra(AccountingWriteCoutentActivity.EXTRA_CONTENT);
+            if (!TextUtils.isEmpty(stringExtra)) {
+                layout_accounting_date_content.setText(stringExtra);
+            }
+        }
     }
 }

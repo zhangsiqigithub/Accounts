@@ -30,6 +30,10 @@
             android:configChanges="keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".AccountingWriteCoutentActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name=".provider.AccountContentProvider"

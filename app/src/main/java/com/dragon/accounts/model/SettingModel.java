@@ -77,14 +77,25 @@ public class SettingModel implements IAccountBookInfo.Callback {
     }
 
     public void resetData() {
-        double totalRevenue = AccountManager.getTotalRevenue(mContext);
-        double totalExpenses = AccountManager.getTotalExpenses(mContext);
-        String totalRevenueStr = AccountUtil.getAccountMoney(totalRevenue);
-        String totalExpensesStr = AccountUtil.getAccountMoney(totalExpenses);
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                final double totalRevenue = AccountManager.getTotalRevenue(mContext);
+                final double totalExpenses = AccountManager.getTotalExpenses(mContext);
+                final String totalRevenueStr = AccountUtil.getAccountMoney(totalRevenue);
+                final String totalExpensesStr = AccountUtil.getAccountMoney(totalExpenses);
 
-        setting_total_revenue_size.setText(totalRevenueStr);
-        setting_total_expenses_size.setText(totalExpensesStr);
-        setting_total_balance_size.setText(AccountUtil.getAccountMoney(totalRevenue - totalExpenses));
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setting_total_revenue_size.setText(totalRevenueStr);
+                        setting_total_expenses_size.setText(totalExpensesStr);
+                        setting_total_balance_size.setText(AccountUtil.getAccountMoney(totalRevenue - totalExpenses));
+                    }
+                });
+            }
+        }.start();
     }
 
     private void initView(View view) {
@@ -116,8 +127,6 @@ public class SettingModel implements IAccountBookInfo.Callback {
                 list.clear();
                 list.addAll(bookList);
                 mHandler.sendEmptyMessage(MSG_UPDATE);
-
-
             }
         }.start();
     }

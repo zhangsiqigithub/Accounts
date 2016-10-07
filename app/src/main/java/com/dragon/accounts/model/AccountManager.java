@@ -63,7 +63,7 @@ public class AccountManager {
                 null,
                 IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + "=?",
                 new String[]{String.valueOf(currentAccountBookId)},
-                IProivderMetaData.AccountColumns.COLUMNS_DATE);
+                IProivderMetaData.AccountColumns.COLUMNS_DATE + " DESC");
         while (query != null && query.moveToNext()) {
             int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns._ID));
             String title = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_NAME));

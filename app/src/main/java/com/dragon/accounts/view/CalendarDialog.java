@@ -18,12 +18,11 @@ import java.util.Date;
 public class CalendarDialog extends Dialog implements OnDateSelectedListener, OnMonthChangedListener {
 
     public interface CalendarDialogCallback {
-        void onDateSelected(String year, String mounthAndDay, long time);
+        void onDateSelected(long time);
     }
 
 
-    private final DateFormat mFormatter_year = new SimpleDateFormat("yyyy");
-    private final DateFormat mFormatter_mounth_day = new SimpleDateFormat("MM月dd日");
+
     private MaterialCalendarView mMaterialCalendarView;
     private CalendarDialogCallback mCalendarDialogCallback;
 
@@ -54,7 +53,7 @@ public class CalendarDialog extends Dialog implements OnDateSelectedListener, On
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         Date tempDate = date.getDate();
         if (mCalendarDialogCallback != null) {
-            mCalendarDialogCallback.onDateSelected(mFormatter_year.format(tempDate), mFormatter_mounth_day.format(tempDate), tempDate.getTime());
+            mCalendarDialogCallback.onDateSelected(tempDate.getTime());
         }
     }
 }
