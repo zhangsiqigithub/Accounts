@@ -1,6 +1,9 @@
 package com.dragon.accounts.model;
 
+import android.content.Context;
 import android.graphics.Color;
+
+import com.dragon.accounts.model.accountbook.info.AccountBookInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,15 @@ public class ColorManager {
                 return COLOR_4;
         }
         return COLOR_0;
+    }
+
+    public static int getCurrentBookColor(Context context) {
+        int mAccountBookBgColor = 0;
+        AccountBookInfo accountBookInfo = AccountBookManager.queryAccountBookByBookId(context, AccountBookManager.getCurrentAccountBookId(context));
+        if (accountBookInfo != null) {
+            mAccountBookBgColor = ColorManager.getColor(accountBookInfo.colorPosition);
+        }
+        return mAccountBookBgColor;
     }
 
     public static List<Integer> getColorList() {

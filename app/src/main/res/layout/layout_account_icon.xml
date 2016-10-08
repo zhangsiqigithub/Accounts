@@ -11,7 +11,7 @@
         android:id="@+id/layout_account_icon_img"
         android:layout_width="@dimen/accounting_icon_img_width"
         android:layout_height="@dimen/accounting_icon_img_width"
-        android:src="@mipmap/icon_star_a8b615" />
+        android:src="@mipmap/icon_star" />
 
     <TextView
         android:id="@+id/layout_account_icon_text"

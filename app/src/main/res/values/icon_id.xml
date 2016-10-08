@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="string_icon_id_common">一般</string>
     <string name="string_icon_id_add">编辑</string>
+    <string name="string_icon_id_common">一般</string>
+    <string name="string_icon_id_food">用餐</string>
+    <string name="string_icon_id_bus">交通</string>
+    <string name="string_icon_id_snacks">零食</string>
+    <string name="string_icon_id_traval">旅游</string>
+    <string name="string_icon_id_redecorate">装修</string>
 
 </resources>

@@ -18,7 +18,7 @@
             android:layout_width="48dip"
             android:layout_height="match_parent"
             android:background="@drawable/selector_background"
-            android:padding="13dip"
+            android:padding="15dip"
             android:src="@mipmap/icon_close_aeaeae" />
 
         <TextView

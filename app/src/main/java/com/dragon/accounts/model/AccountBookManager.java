@@ -47,10 +47,9 @@ public class AccountBookManager {
         contentValues.put(IProivderMetaData.AccountBookColumns.COLUMNS_SIZE, size);
         contentValues.put(IProivderMetaData.AccountBookColumns.COLUMNS_COLOR_POSITION, colorPosition);
         context.getContentResolver().insert(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK, contentValues);
-//        log("insertAccountBook-->" + contentValues);
     }
 
-    public static List<IAccountBookInfo> queryAccountBook(Context context, IAccountBookInfo.Callback callback) {
+    public static List<IAccountBookInfo> queryAccountBooks(Context context, IAccountBookInfo.Callback callback) {
         List<IAccountBookInfo> tempList = new ArrayList<>();
         Cursor query = context.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK, null, null, null, null);
         while (query != null && query.moveToNext()) {
@@ -59,8 +58,6 @@ public class AccountBookManager {
             String name = query.getString(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_NAME));
             int colorPosition = query.getInt(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_COLOR_POSITION));
             int size = AccountManager.getAccountsCount(context, accountBookId);
-
-//            log("queryAccountBook-->id:" + id + " accountBookId:" + accountBookId + " name:" + name + " size:" + size + " colorPosition:" + colorPosition);
 
             AccountBookInfo info = new AccountBookInfo();
             info.id = id;
@@ -76,6 +73,28 @@ public class AccountBookManager {
         addBookInfo.callback = callback;
         tempList.add(addBookInfo);
         return tempList;
+    }
+
+    public static AccountBookInfo queryAccountBookByBookId(Context context, int bookId) {
+        AccountBookInfo info = null;
+        Cursor query = context.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK, null,
+                IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + "=?",
+                new String[]{String.valueOf(bookId)}, null);
+        if (query != null && query.moveToNext()) {
+            int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountBookColumns._ID));
+            int accountBookId = query.getInt(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID));
+            String name = query.getString(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_NAME));
+            int colorPosition = query.getInt(query.getColumnIndex(IProivderMetaData.AccountBookColumns.COLUMNS_COLOR_POSITION));
+            int size = AccountManager.getAccountsCount(context, accountBookId);
+
+            info = new AccountBookInfo();
+            info.id = id;
+            info.accountBookId = accountBookId;
+            info.name = name;
+            info.size = size;
+            info.colorPosition = colorPosition;
+        }
+        return info;
     }
 
     public static int getAccountBookCount(Context context) {

@@ -58,5 +58,6 @@ public class AccountViewHolder extends BaseAccountHolder {
                 fragment_account_layout_right_money.setText(String.valueOf(money));
                 break;
         }
+        fragment_account_img.setImageResource(info.accountIconId);
     }
 }

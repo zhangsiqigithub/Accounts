@@ -52,19 +52,27 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/layout_accounting_title_parent"
         android:layout_width="match_parent"
         android:layout_height="48dip"
         android:background="#b3af40"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/layout_accounting_icon_img"
-            android:layout_width="48dip"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dip"
-            android:padding="5dip"
-            android:src="@mipmap/icon_star_white" />
+        <LinearLayout
+            android:layout_width="42dip"
+            android:layout_height="42dip"
+            android:layout_marginLeft="12dip"
+            android:background="@drawable/shape_oval_color_bg"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/layout_accounting_icon_img"
+                android:layout_width="48dip"
+                android:layout_height="match_parent"
+                android:padding="5dip"
+                android:src="@mipmap/icon_star" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/layout_accounting_icon_title"
@@ -162,7 +170,7 @@
             android:paddingRight="16dip"
             android:singleLine="true"
             android:textColor="@color/color_aa444444"
-            android:textColorHint="#44444444"
+            android:textColorHint="@color/color_line1"
             android:textSize="14dip" />
 
         <ImageView

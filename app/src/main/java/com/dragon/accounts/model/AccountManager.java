@@ -35,12 +35,13 @@ public class AccountManager {
         return Double.valueOf(SharedPref.getString(context, KEY_TOTAL_EXPENSES, "0"));
     }
 
-    public static void insertAccount(Context context, String name, String content, double money, int accountType, int accountBookId, long date) {
+    public static void insertAccount(Context context, String name, int accountIconId, String content, double money, int accountType, int accountBookId, long date) {
         if (context == null)
             return;
         ContentValues contentValues = new ContentValues();
         contentValues.put(IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID, accountBookId);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_NAME, name);
+        contentValues.put(IProivderMetaData.AccountIconColumns.COLUMNS_ICON_ID, accountIconId);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_CONTENT, content);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_MONEY, money);
         contentValues.put(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE, accountType);
@@ -70,6 +71,7 @@ public class AccountManager {
             String content = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_CONTENT));
             double money = query.getDouble(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_MONEY));
             int accountType = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE));
+            int accountIconId = query.getInt(query.getColumnIndex(IProivderMetaData.AccountIconColumns.COLUMNS_ICON_ID));
             long date = query.getLong(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_DATE));
 
             AccountInfo info = new AccountInfo();
@@ -79,6 +81,7 @@ public class AccountManager {
             info.money = money;
             info.accountType = accountType;
             info.date = date;
+            info.accountIconId = accountIconId;
             tempList.add(info);
         }
         return tempList;

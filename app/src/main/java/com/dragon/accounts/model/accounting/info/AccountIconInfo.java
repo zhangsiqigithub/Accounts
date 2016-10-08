@@ -9,12 +9,14 @@ public class AccountIconInfo {
     public int id;
     public int iconId;
     public String name;
+    public int iconType;
     public AccountingCallback mAccountingCallback;
 
-    public AccountIconInfo(int id, int iconId, String name, AccountingCallback callback) {
+    public AccountIconInfo(int id, int iconId, String name, int iconType, AccountingCallback callback) {
         this.id = id;
         this.iconId = iconId;
         this.name = name;
+        this.iconType = iconType;
         this.mAccountingCallback = callback;
     }
 

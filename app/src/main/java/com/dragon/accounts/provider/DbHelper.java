@@ -29,6 +29,7 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
                 + AccountColumns._ID + " integer primary key,"
                 + AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " integer,"
                 + AccountColumns.COLUMNS_NAME + " varchar,"
+                + AccountIconColumns.COLUMNS_ICON_ID + " integer,"
                 + AccountColumns.COLUMNS_CONTENT + " varchar,"
                 + AccountColumns.COLUMNS_MONEY + " double,"
                 + AccountColumns.COLUMNS_ACCOUNT_TYPE + " integer,"
@@ -40,6 +41,7 @@ public class DbHelper extends SQLiteOpenHelper implements IProivderMetaData {
                 + AccountIconColumns.TABLE_NAME + " ("
                 + AccountIconColumns._ID + " integer primary key,"
                 + AccountIconColumns.COLUMNS_ICON_ID + " integer,"
+                + AccountIconColumns.COLUMNS_ICON_TYPE + " integer,"
                 + AccountIconColumns.COLUMNS_ICON_NAME + " varchar"
                 + ")";
         db.execSQL(TABLESQL_ACCOUNT_ICON);

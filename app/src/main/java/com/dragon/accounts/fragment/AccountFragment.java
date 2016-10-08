@@ -134,12 +134,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 for (AccountInfo info : accountList) {
                     String millis = TimeUtil.getDayByMillis(info.date);
                     boolean isSameDate = millis != null && millis.equals(date);
-                    if (isSameDate) {
-                        dateInfo.money += info.money;
-                    } else {
+                    if (!isSameDate) {
                         dateInfo = new AccountDateInfo();
-                        dateInfo.money += info.money;
                         dateInfo.date = millis;
+                    }
+                    if (info.accountType == AccountManager.ACCOUNT_TYPE_EXPENSES) {
+                        dateInfo.money += info.money;
                     }
                     date = millis;
                     switch (info.accountType) {

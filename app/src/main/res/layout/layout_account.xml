@@ -14,7 +14,7 @@
             android:layout_height="28dip"
             android:layout_centerHorizontal="true"
             android:background="@android:color/white"
-            android:src="@mipmap/icon_type_money" />
+            android:src="@mipmap/icon_star" />
 
         <RelativeLayout
             android:id="@+id/fragment_account_layout_left"

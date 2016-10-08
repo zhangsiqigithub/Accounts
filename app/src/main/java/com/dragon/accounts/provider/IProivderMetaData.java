@@ -74,6 +74,7 @@ public interface IProivderMetaData {
 
         String COLUMNS_ICON_ID = "icon_id";
         String COLUMNS_ICON_NAME = "icon_name";
+        String COLUMNS_ICON_TYPE = "icon_type";
 
         //该ContentProvider所返回的数据类型的定义
         String CONTENT_ICON = "vnd.android.cursor.item/account_icons";

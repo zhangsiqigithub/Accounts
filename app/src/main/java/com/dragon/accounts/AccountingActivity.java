@@ -1,6 +1,7 @@
 package com.dragon.accounts;
 
-import android.animation.AnimatorSet;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.dragon.accounts.model.AccountBookManager;
 import com.dragon.accounts.model.AccountIconManager;
 import com.dragon.accounts.model.AccountManager;
+import com.dragon.accounts.model.ColorManager;
 import com.dragon.accounts.model.accounting.adapter.AccountingListAdapter;
 import com.dragon.accounts.model.accounting.info.AccountIconInfo;
 import com.dragon.accounts.view.CalculatorView;
@@ -50,6 +52,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     private TextView layout_accounting_date_year;
     private TextView layout_accounting_date_mount_day;
     private TextView layout_accounting_date_content;
+    private View layout_accounting_title_parent;
 
     private AccountingListAdapter mAccountingListAdapter;
     private int accountType = AccountManager.ACCOUNT_TYPE_EXPENSES;
@@ -60,6 +63,8 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     private final DateFormat mFormatter_year = new SimpleDateFormat("yyyy");
     private final DateFormat mFormatter_mounth_day = new SimpleDateFormat("MM月dd日");
     private long mTimeLong = System.currentTimeMillis();
+    private int mAccountBookBgColor;
+    private boolean isInitAnim;
 
     private static final int MSG_UPDATE = 1;
     private Handler mHandler = new Handler() {
@@ -74,6 +79,8 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                     } else {
                         mAccountingListAdapter.notifyDataSetChanged();
                     }
+                    layout_accounting_title_parent.setBackgroundColor(mAccountBookBgColor);
+                    doSelectIcon(mCurrentSelectIndex, (Boolean) msg.obj);
                     break;
             }
         }
@@ -87,7 +94,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     }
 
     private void init() {
-        initData();
+        initData(false);
         initView();
         mCalculatorView.setCalculatorViewCallback(new CalculatorView.CalculatorViewCallback() {
             @Override
@@ -100,6 +107,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                 AccountIconInfo info = list.get(mCurrentSelectIndex);
                 AccountManager.insertAccount(getApplicationContext(),
                         info.name,
+                        info.iconId,
                         layout_accounting_date_content.getText().toString(),
                         result,
                         accountType,
@@ -134,46 +142,66 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     private AccountIconInfo.AccountingCallback mAccountingCallback = new AccountIconInfo.AccountingCallback() {
         @Override
         public void onClick(int position) {
-            AccountIconInfo info = list.get(position);
-            switch (info.iconId) {
-                case AccountIconManager.ICON_ID_ADD:
-
-                    break;
-                default:
-                    mCurrentSelectIndex = position;
-                    layout_accounting_icon_img.setImageResource(AccountIconManager.getTitleIconIdByIconId(info.iconId));
-                    layout_accounting_icon_title.setText(info.name);
-
-                    ObjectAnimator scaleX = ObjectAnimator.ofFloat(layout_accounting_icon_img, "scaleX", 1.0f, 1.2f, 0.5f, 1.0f);
-                    ObjectAnimator scaleY = ObjectAnimator.ofFloat(layout_accounting_icon_img, "scaleY", 1.0f, 1.2f, 0.5f, 1.0f);
-
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animatorSet.playTogether(scaleX, scaleY);
-                    animatorSet.setDuration(500);
-                    animatorSet.start();
-                    break;
-            }
+            doSelectIcon(position, true);
         }
     };
 
-    private void initData() {
+    private void doSelectIcon(int position, boolean anim) {
+        final AccountIconInfo info = list.get(position);
+        switch (info.iconId) {
+            case AccountIconManager.ICON_ID_ADD:
+
+                break;
+            default:
+                if (!isInitAnim || mCurrentSelectIndex != position) {
+                    isInitAnim = true;
+                    mCurrentSelectIndex = position;
+                    if (anim) {
+                        ObjectAnimator animator = ObjectAnimator.ofFloat(layout_accounting_icon_img, "rotationY", 0, 90f).setDuration(100);
+                        animator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                layout_accounting_icon_img.setImageResource(info.iconId);
+                                layout_accounting_icon_title.setText(info.name);
+                                ObjectAnimator animator = ObjectAnimator.ofFloat(layout_accounting_icon_img, "rotationY", 270, 360f).setDuration(100);
+                                animator.start();
+                            }
+                        });
+                        animator.start();
+                    } else {
+                        layout_accounting_icon_img.setImageResource(info.iconId);
+                        layout_accounting_icon_title.setText(info.name);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void initData(final boolean anim) {
         new Thread() {
             @Override
             public void run() {
                 super.run();
-                List<AccountIconInfo> accountIconInfos = AccountIconManager.queryAllAccountIcons(getApplicationContext(), mAccountingCallback);
-                accountIconInfos.add(new AccountIconInfo(-1, AccountIconManager.ICON_ID_ADD, getString(R.string.string_icon_id_add), mAccountingCallback));
+                mAccountBookBgColor = ColorManager.getCurrentBookColor(getApplicationContext());
+                List<AccountIconInfo> accountIconInfos = AccountIconManager.queryAllAccountIcons(getApplicationContext(), accountType, mAccountingCallback);
+                accountIconInfos.add(new AccountIconInfo(-1, AccountIconManager.ICON_ID_ADD, getString(R.string.string_icon_id_add), 0, mAccountingCallback));
                 if (list == null) {
                     list = new ArrayList<>();
                 }
                 list.clear();
                 list.addAll(accountIconInfos);
-                mHandler.sendEmptyMessage(MSG_UPDATE);
+                mCurrentSelectIndex = 0;
+                isInitAnim = false;
+                Message msg = Message.obtain();
+                msg.what = MSG_UPDATE;
+                msg.obj = anim;
+                mHandler.sendMessage(msg);
             }
         }.start();
     }
 
     private void initView() {
+        layout_accounting_title_parent = findViewById(R.id.layout_accounting_title_parent);
         layout_accounting_text_money = (TextView) findViewById(R.id.layout_accounting_text_money);
         layout_accounting_btn_revenue = (TextView) findViewById(R.id.layout_accounting_btn_revenue);
         layout_accounting_btn_expenses = (TextView) findViewById(R.id.layout_accounting_btn_expenses);
@@ -197,7 +225,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
 
     private void initRecyclerView() {
         layout_accounting_recyclerview.setLayoutManager(new GridLayoutManager(this, SPAN_COUNT));
-        mHandler.sendEmptyMessage(MSG_UPDATE);
+//        mHandler.sendEmptyMessage(MSG_UPDATE);
     }
 
     @Override
@@ -207,14 +235,20 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                 finish();
                 break;
             case R.id.layout_accounting_btn_revenue:
-                layout_accounting_btn_revenue.setAlpha(1f);
-                layout_accounting_btn_expenses.setAlpha(0.3f);
-                accountType = AccountManager.ACCOUNT_TYPE_REVENUE;
+                if (accountType != AccountManager.ACCOUNT_TYPE_REVENUE) {
+                    layout_accounting_btn_revenue.setAlpha(1f);
+                    layout_accounting_btn_expenses.setAlpha(0.3f);
+                    accountType = AccountManager.ACCOUNT_TYPE_REVENUE;
+                    initData(true);
+                }
                 break;
             case R.id.layout_accounting_btn_expenses:
-                layout_accounting_btn_revenue.setAlpha(0.3f);
-                layout_accounting_btn_expenses.setAlpha(1f);
-                accountType = AccountManager.ACCOUNT_TYPE_EXPENSES;
+                if (accountType != AccountManager.ACCOUNT_TYPE_EXPENSES) {
+                    layout_accounting_btn_revenue.setAlpha(0.3f);
+                    layout_accounting_btn_expenses.setAlpha(1f);
+                    accountType = AccountManager.ACCOUNT_TYPE_EXPENSES;
+                    initData(true);
+                }
                 break;
             case R.id.layout_accounting_date_parent:
                 showCalandarDialog();

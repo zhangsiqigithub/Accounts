@@ -123,7 +123,7 @@ public class SettingModel implements IAccountBookInfo.Callback {
             @Override
             public void run() {
                 super.run();
-                List<IAccountBookInfo> bookList = AccountBookManager.queryAccountBook(mContext, SettingModel.this);
+                List<IAccountBookInfo> bookList = AccountBookManager.queryAccountBooks(mContext, SettingModel.this);
                 list.clear();
                 list.addAll(bookList);
                 mHandler.sendEmptyMessage(MSG_UPDATE);
