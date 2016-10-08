@@ -37,7 +37,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:text="@string/string_wages"
-                    android:textColor="#88444444"
+                    android:textColor="@color/color_aa444444"
                     android:textSize="14dip" />
 
                 <TextView
@@ -49,7 +49,7 @@
                     android:layout_toLeftOf="@id/fragment_account_layout_left_title"
                     android:gravity="right|center_vertical"
                     android:text="213133232"
-                    android:textColor="#44444444"
+                    android:textColor="@color/color_aa444444"
                     android:textSize="12dip" />
             </RelativeLayout>
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/string_wages"
-                    android:textColor="#88444444"
+                    android:textColor="@color/color_aa444444"
                     android:textSize="14dip" />
 
                 <TextView
@@ -97,7 +97,7 @@
                     android:layout_toRightOf="@id/fragment_account_layout_right_title"
                     android:gravity="left|center_vertical"
                     android:text="213133232"
-                    android:textColor="#44444444"
+                    android:textColor="@color/color_aeaeae"
                     android:textSize="12dip" />
             </RelativeLayout>
 

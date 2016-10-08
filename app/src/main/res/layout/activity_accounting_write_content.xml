@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:layout_gravity="bottom"
-        android:background="@color/color_line" />
+        android:background="@color/color_line1" />
 
     <EditText
         android:id="@+id/accounting_write_content_edittext"

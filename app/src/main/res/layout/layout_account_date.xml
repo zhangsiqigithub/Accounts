@@ -21,7 +21,7 @@
             android:layout_marginRight="5dip"
             android:layout_toLeftOf="@id/layout_account_date_oval"
             android:text="3月30号"
-            android:textColor="#44444444"
+            android:textColor="@color/color_aeaeae"
             android:textSize="10dip" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_marginLeft="5dip"
             android:layout_toRightOf="@id/layout_account_date_oval"
             android:text="10.00"
-            android:textColor="#44444444"
+            android:textColor="@color/color_aeaeae"
             android:textSize="10dip" />
     </RelativeLayout>
 </RelativeLayout>

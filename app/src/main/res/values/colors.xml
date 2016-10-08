@@ -5,7 +5,9 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="color_fragment_account_line">#44444444</color>
-    <color name="color_line">#dedede</color>
+    <color name="color_line1">#dedede</color>
+    <color name="color_line2">#88ededed</color>
+    <color name="color_line3">#44ededed</color>
     <color name="color_bg">#fffffb</color>
     <color name="color_accounting_calculator_bg">#fffff8</color>
     <color name="color_accounting_calculator_number_text">#444444</color>
