@@ -11,8 +11,6 @@ import com.dragon.accounts.view.calendar.MaterialCalendarView;
 import com.dragon.accounts.view.calendar.OnDateSelectedListener;
 import com.dragon.accounts.view.calendar.OnMonthChangedListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CalendarDialog extends Dialog implements OnDateSelectedListener, OnMonthChangedListener {
@@ -21,14 +19,12 @@ public class CalendarDialog extends Dialog implements OnDateSelectedListener, On
         void onDateSelected(long time);
     }
 
-
-
     private MaterialCalendarView mMaterialCalendarView;
     private CalendarDialogCallback mCalendarDialogCallback;
+    private long mTimeLong;
 
     public CalendarDialog(Context context) {
         super(context, R.style.dialog);
-
     }
 
     @Override
@@ -38,7 +34,14 @@ public class CalendarDialog extends Dialog implements OnDateSelectedListener, On
         mMaterialCalendarView = (MaterialCalendarView) findViewById(R.id.dialot_calendar_calendarView);
         mMaterialCalendarView.setOnDateChangedListener(this);
         mMaterialCalendarView.setOnMonthChangedListener(this);
-        mMaterialCalendarView.setSelectedDate(mMaterialCalendarView.getCurrentDate());
+        setSelectedDate(mTimeLong);
+    }
+
+    public void setSelectedDate(long mTimeLong) {
+        this.mTimeLong = mTimeLong;
+        if (mMaterialCalendarView != null) {
+            mMaterialCalendarView.setSelectedDate(new Date((mTimeLong == 0 ? System.currentTimeMillis() : mTimeLong)));
+        }
     }
 
     public void setCalendarDialogCallback(CalendarDialogCallback calendarDialogCallback) {

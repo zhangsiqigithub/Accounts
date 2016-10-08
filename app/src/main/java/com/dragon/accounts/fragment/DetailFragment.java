@@ -28,4 +28,9 @@ public class DetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_detail, null);
         return view;
     }
+
+    @Override
+    public void resetData() {
+        
+    }
 }

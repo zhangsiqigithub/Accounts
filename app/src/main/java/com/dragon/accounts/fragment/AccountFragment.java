@@ -54,6 +54,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
     private static final int MSG_UPDATE = 1;
     private static final int MSG_UPDATE_ACCOUNT_MONEY = 2;
+    private static final int MSG_NOTIFY_ACCOUNT_ADDED = 3;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -72,6 +73,11 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                     setting_total_revenue_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_REVENUE)));
                     setting_total_balance_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_EXPENSES)));
                     fragment_account_title.setText(String.valueOf(bundle.getString(KEY_ACCOUNT_NAME)));
+                    break;
+                case MSG_NOTIFY_ACCOUNT_ADDED:
+                    if (mAccountFragmentCallback != null) {
+                        mAccountFragmentCallback.onAccountAdded();
+                    }
                     break;
             }
         }
@@ -109,6 +115,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         resetData();
     }
 
+    @Override
     public void resetData() {
         mCurrentAccountBookId = AccountBookManager.getCurrentAccountBookId(mContext);
         new Thread() {
@@ -172,11 +179,9 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 msg.setData(bundle);
                 mHandler.sendMessage(msg);
 
+                mHandler.sendEmptyMessageDelayed(MSG_NOTIFY_ACCOUNT_ADDED, 100);
             }
         }.start();
-        if (mAccountFragmentCallback != null) {
-            mAccountFragmentCallback.onAccountAdded();
-        }
     }
 
     @Override
@@ -184,7 +189,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.fragment_account_add:
                 AccountingActivity.start(getActivity());
-//                AccountManager.insertAccount(mContext, "用餐", "早饭", 100.05f, AccountManager.ACCOUNT_TYPE_EXPENSES, mCurrentAccountBookId);
                 break;
             case R.id.fragment_account_hint:
 

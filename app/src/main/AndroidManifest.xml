@@ -33,6 +33,7 @@
         <activity
             android:name=".AccountingWriteCoutentActivity"
             android:configChanges="keyboardHidden"
+            android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait" />
 
         <provider

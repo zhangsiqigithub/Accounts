@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,7 +50,6 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     private TextView layout_accounting_date_year;
     private TextView layout_accounting_date_mount_day;
     private TextView layout_accounting_date_content;
-    private ImageView layout_accounting_date_content_btn;
 
     private AccountingListAdapter mAccountingListAdapter;
     private int accountType = AccountManager.ACCOUNT_TYPE_EXPENSES;
@@ -119,6 +117,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                 mCalandarDialog.dismiss();
             }
         });
+        mCalandarDialog.setSelectedDate(mTimeLong);
         resetDate();
     }
 
@@ -185,7 +184,6 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         layout_accounting_date_year = (TextView) findViewById(R.id.layout_accounting_date_year);
         layout_accounting_date_mount_day = (TextView) findViewById(R.id.layout_accounting_date_mount_day);
         layout_accounting_date_content = (TextView) findViewById(R.id.layout_accounting_date_content);
-        layout_accounting_date_content_btn = (ImageView) findViewById(R.id.layout_accounting_date_content_btn);
 
         findViewById(R.id.layout_account_back_btn).setOnClickListener(this);
         findViewById(R.id.layout_accounting_date_parent).setOnClickListener(this);
@@ -223,7 +221,9 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                 break;
             case R.id.layout_accounting_date_content_btn:
             case R.id.layout_accounting_date_content:
-                AccountingWriteCoutentActivity.start(this, null, REQ_CODE);
+                Bundle bundle = new Bundle();
+                bundle.putString(AccountingWriteCoutentActivity.EXTRA_CONTENT, layout_accounting_date_content.getText().toString());
+                AccountingWriteCoutentActivity.start(this, bundle, REQ_CODE);
                 break;
         }
     }
@@ -251,7 +251,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_CODE && resultCode == RESULT_OK) {
             String stringExtra = data.getStringExtra(AccountingWriteCoutentActivity.EXTRA_CONTENT);
-            if (!TextUtils.isEmpty(stringExtra)) {
+            if (layout_accounting_date_content != null) {
                 layout_accounting_date_content.setText(stringExtra);
             }
         }

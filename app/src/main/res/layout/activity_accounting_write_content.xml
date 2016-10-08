@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,10 +15,10 @@
 
         <ImageView
             android:id="@+id/accounting_write_content_back_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="48dip"
             android:layout_height="match_parent"
             android:background="@drawable/selector_background"
-            android:padding="15dip"
+            android:padding="13dip"
             android:src="@mipmap/icon_close_aeaeae" />
 
         <TextView
@@ -25,7 +28,7 @@
             android:gravity="center"
             android:text="@string/string_accounting_write_content_remark"
             android:textColor="#444444"
-            android:textSize="14dip" />
+            android:textSize="16sp" />
 
 
         <TextView
@@ -35,7 +38,8 @@
             android:background="@drawable/selector_background"
             android:gravity="center"
             android:text="@string/string_finish"
-            android:textColor="#fa9b3d" />
+            android:textColor="#fa9b3d"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -47,13 +51,16 @@
     <EditText
         android:id="@+id/accounting_write_content_edittext"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dip"
         android:layout_weight="1"
         android:background="@android:color/transparent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="start|top"
         android:hint="@string/string_accounting_write_content_hint"
+        android:maxLength="70"
         android:padding="10dip"
         android:textColor="#444444"
-        android:textSize="14dip" />
+        android:textSize="16sp" />
 
 </LinearLayout>

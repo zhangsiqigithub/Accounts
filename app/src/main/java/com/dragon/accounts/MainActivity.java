@@ -45,6 +45,7 @@ public class MainActivity extends FragmentActivity {
         accountFragment.setAccountFragmentCallback(new AccountFragment.AccountFragmentCallback() {
             @Override
             public void onAccountAdded() {
+                closeDrawer();
                 mSettingModel.resetData();
             }
         });
@@ -58,7 +59,6 @@ public class MainActivity extends FragmentActivity {
         mSettingModel.setSettingModelCallback(new SettingModel.SettingModelCallback() {
             @Override
             public void onAccountSelect() {
-                closeDrawer();
                 accountFragment.resetData();
             }
         });

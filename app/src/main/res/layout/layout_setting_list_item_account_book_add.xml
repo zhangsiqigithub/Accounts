@@ -9,7 +9,7 @@
         android:id="@+id/setting_list_item_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardBackgroundColor="@color/color_bg"
         card_view:cardCornerRadius="@dimen/card_corner_radius"
         card_view:cardUseCompatPadding="true">
 
