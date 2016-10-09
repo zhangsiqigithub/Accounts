@@ -5,7 +5,7 @@ android {
         release {
             keyAlias 'dragon'
             keyPassword 'xiaolong'
-            storeFile file('./dragonsigned.jks')
+            storeFile file('/home/yeguolong/develop/git_repository/Accounts/dragon_signed.jks')
             storePassword 'xiaolong'
         }
     }
