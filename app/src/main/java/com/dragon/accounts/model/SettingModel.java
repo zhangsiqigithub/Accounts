@@ -182,4 +182,8 @@ public class SettingModel implements IAccountBookInfo.Callback {
             mAccountAddDialog.dismiss();
         }
     }
+
+    public void release() {
+        mHandler.removeCallbacksAndMessages(null);
+    }
 }

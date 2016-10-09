@@ -34,12 +34,12 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     public static void start(Activity activity) {
         if (activity != null) {
             Intent intent = new Intent(activity, AccountingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(intent);
         }
     }
 
-    private static final int REQ_CODE = 100;
+    private static final int REQ_CODE_REMARK = 100;
+    private static final int REQ_CODE_ICON = 101;
     private static final int SPAN_COUNT = 6;
 
     private TextView layout_accounting_text_money;
@@ -150,7 +150,9 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         final AccountIconInfo info = list.get(position);
         switch (info.iconId) {
             case AccountIconManager.ICON_ID_ADD:
-
+                Bundle bundle = new Bundle();
+                bundle.putInt(AddAccountTypeActivity.EXTRA_ACCOUNT_TYPE, accountType);
+                AddAccountTypeActivity.start(this, bundle, REQ_CODE_ICON);
                 break;
             default:
                 if (!isInitAnim || mCurrentSelectIndex != position) {
@@ -220,12 +222,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
         layout_accounting_btn_revenue.setOnClickListener(this);
         layout_accounting_btn_expenses.setOnClickListener(this);
 
-        initRecyclerView();
-    }
-
-    private void initRecyclerView() {
         layout_accounting_recyclerview.setLayoutManager(new GridLayoutManager(this, SPAN_COUNT));
-//        mHandler.sendEmptyMessage(MSG_UPDATE);
     }
 
     @Override
@@ -257,7 +254,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
             case R.id.layout_accounting_date_content:
                 Bundle bundle = new Bundle();
                 bundle.putString(AccountingWriteCoutentActivity.EXTRA_CONTENT, layout_accounting_date_content.getText().toString());
-                AccountingWriteCoutentActivity.start(this, bundle, REQ_CODE);
+                AccountingWriteCoutentActivity.start(this, bundle, REQ_CODE_REMARK);
                 break;
         }
     }
@@ -283,11 +280,24 @@ public class AccountingActivity extends Activity implements View.OnClickListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQ_CODE && resultCode == RESULT_OK) {
-            String stringExtra = data.getStringExtra(AccountingWriteCoutentActivity.EXTRA_CONTENT);
-            if (layout_accounting_date_content != null) {
-                layout_accounting_date_content.setText(stringExtra);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQ_CODE_REMARK:
+                    String stringExtra = data.getStringExtra(AccountingWriteCoutentActivity.EXTRA_CONTENT);
+                    if (layout_accounting_date_content != null) {
+                        layout_accounting_date_content.setText(stringExtra);
+                    }
+                    break;
+                case REQ_CODE_ICON:
+                    initData(false);
+                    break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

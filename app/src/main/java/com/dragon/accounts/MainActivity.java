@@ -91,4 +91,12 @@ public class MainActivity extends FragmentActivity {
             mSettingModel.hideAccountAddDialog();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSettingModel != null) {
+            mSettingModel.release();
+        }
+    }
 }

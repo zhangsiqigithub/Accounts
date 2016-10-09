@@ -16,7 +16,6 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +27,17 @@
         <activity
             android:name=".AccountingActivity"
             android:configChanges="keyboardHidden"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AccountingWriteCoutentActivity"
             android:configChanges="keyboardHidden"
-            android:windowSoftInputMode="stateVisible"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name=".AddAccountTypeActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
 
         <provider
             android:name=".provider.AccountContentProvider"

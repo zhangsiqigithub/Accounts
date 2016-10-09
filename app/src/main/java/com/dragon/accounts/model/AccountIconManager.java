@@ -25,7 +25,7 @@ public class AccountIconManager {
     };
 
     public static final int[][] ICON_ARRAY_REVENUE = {
-            {R.mipmap.icon_revenue, R.string.string_icon_id_redecorate}
+            {R.mipmap.icon_revenue, R.string.string_icon_id_common}
     };
 
     public static void init(Context context) {

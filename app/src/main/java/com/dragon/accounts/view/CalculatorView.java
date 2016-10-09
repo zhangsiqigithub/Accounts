@@ -89,8 +89,12 @@ public class CalculatorView extends LinearLayout implements View.OnClickListener
     @Override
     public void onClick(View v) {
         LinkedList<String> list;
-        TextView textView = (TextView) v;
-        String text = textView.getText().toString();
+        TextView textView;
+        String text = null;
+        if (v instanceof TextView) {
+            textView = (TextView) v;
+            text = textView.getText().toString();
+        }
         switch (v.getId()) {
             case R.id.calculator_text_1:
             case R.id.calculator_text_2:

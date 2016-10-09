@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="5dip"
+    android:paddingTop="10dip">
+
+    <ImageView
+        android:id="@+id/account_icon_item_img"
+        android:layout_width="36dip"
+        android:layout_height="36dip"
+        android:src="@mipmap/icon_star" />
+
+</LinearLayout>

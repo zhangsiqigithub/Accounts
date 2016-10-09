@@ -75,18 +75,15 @@
                 android:layout_marginTop="@dimen/accounting_calculator_line1"
                 android:background="@color/color_accounting_calculator_line" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/calculator_text_x"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/selector_accounting_calculator"
                 android:clickable="true"
-                android:gravity="center"
                 android:padding="@dimen/accounting_calculator_text_padding"
-                android:text="x"
-                android:textColor="@color/color_accounting_calculator_number_text"
-                android:textSize="@dimen/accounting_calculator_text_size" />
+                android:src="@mipmap/icon_delete" />
         </LinearLayout>
 
         <LinearLayout
