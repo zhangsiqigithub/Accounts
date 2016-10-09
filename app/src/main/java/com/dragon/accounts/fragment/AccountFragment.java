@@ -1,6 +1,8 @@
 package com.dragon.accounts.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -102,17 +104,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         view.findViewById(R.id.fragment_account_menu_bg).setOnClickListener(this);
         home_hint.setOnClickListener(this);
 
+        resetData();
         return view;
     }
 
     public void setAccountFragmentCallback(AccountFragmentCallback accountFragmentCallback) {
         this.mAccountFragmentCallback = accountFragmentCallback;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        resetData();
     }
 
     @Override
@@ -184,11 +181,13 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         }.start();
     }
 
+    private static final int REQ_CODE = 100;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fragment_account_add:
-                AccountingActivity.start(getActivity());
+                AccountingActivity.start(getActivity(), REQ_CODE);
                 break;
             case R.id.fragment_account_hint:
 
@@ -196,6 +195,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
             case R.id.fragment_account_menu_bg:
                 ((MainActivity) getActivity()).openDrawer();
                 break;
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQ_CODE && resultCode == Activity.RESULT_OK) {
+            resetData();
         }
     }
 }

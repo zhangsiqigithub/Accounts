@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dragon.accounts.R;
+import com.dragon.accounts.SettingActivity;
 import com.dragon.accounts.adapter.AccountBookListAdapter;
 import com.dragon.accounts.model.accountbook.info.AccountBookInfo;
 import com.dragon.accounts.model.accountbook.info.IAccountBookInfo;
@@ -24,7 +25,7 @@ import com.dragon.accounts.view.AccountAddDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingModel implements IAccountBookInfo.Callback {
+public class SettingModel implements IAccountBookInfo.Callback, View.OnClickListener {
 
     public interface SettingModelCallback {
         void onAccountSelect();
@@ -103,6 +104,8 @@ public class SettingModel implements IAccountBookInfo.Callback {
         setting_total_revenue_size = (TextView) view.findViewById(R.id.setting_total_revenue_size);
         setting_total_expenses_size = (TextView) view.findViewById(R.id.setting_total_expenses_size);
         setting_total_balance_size = (TextView) view.findViewById(R.id.setting_total_balance_size);
+
+        view.findViewById(R.id.layout_setting_setting_layout).setOnClickListener(this);
     }
 
     private void initRecyclerView() {
@@ -181,6 +184,16 @@ public class SettingModel implements IAccountBookInfo.Callback {
         if (mAccountAddDialog != null && mAccountAddDialog.isShowing()) {
             mAccountAddDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.layout_setting_setting_layout:
+                SettingActivity.start(mContext);
+                break;
+        }
+
     }
 
     public void release() {

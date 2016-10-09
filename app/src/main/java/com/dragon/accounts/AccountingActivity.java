@@ -31,10 +31,10 @@ import java.util.List;
 
 public class AccountingActivity extends Activity implements View.OnClickListener {
 
-    public static void start(Activity activity) {
+    public static void start(Activity activity, int reqCode) {
         if (activity != null) {
             Intent intent = new Intent(activity, AccountingActivity.class);
-            activity.startActivity(intent);
+            activity.startActivityForResult(intent, reqCode);
         }
     }
 
@@ -112,6 +112,7 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                         result,
                         accountType,
                         AccountBookManager.getCurrentAccountBookId(getApplicationContext()), mTimeLong);
+                setResult(RESULT_OK);
                 finish();
             }
         });

@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Accounts</string>
-    <string name="string_home_tv_hint">新账本</string>
-    <string name="string_setting">设置</string>
-    <string name="string_detail_tv_hint">详情</string>
+    <string name="app_name">LightAccounts</string>
+    <string name="app_user_temp">User</string>
+    <string name="string_home_tv_hint">New Account</string>
+    <string name="string_setting">Setting</string>
+    <string name="string_detail_tv_hint">Detail</string>
     <string name="string_home_btn_add">添加</string>
     <string name="string_total_revenue">总收入</string>
     <string name="string_total_expenses">总支出</string>
@@ -10,8 +11,8 @@
     <string name="string_account_book_default_title">日常账本</string>
     <string name="string_account_book_size_unit">笔</string>
     <string name="string_account_add_text_hint">新建账本</string>
-    <string name="string_btn_ok">确定</string>
-    <string name="string_btn_cancel">取消</string>
+    <string name="string_btn_ok">Ok</string>
+    <string name="string_btn_cancel">Cancel</string>
     <string name="string_account_add_error_tips">请输入账本名称</string>
     <string name="string_wages">工资</string>
     <string name="string_revenue">收入</string>
@@ -27,4 +28,6 @@
     <string name="string_add_account_type_title">添加分类</string>
     <string name="string_add_account_type_hint">输入分类名称</string>
     <string name="string_add_account_type_tips">输请输入分类名称</string>
+    <string name="string_setting_item_about">关于我们</string>
+    <string name="string_abount_decription">一款牛逼的App</string>
 </resources>

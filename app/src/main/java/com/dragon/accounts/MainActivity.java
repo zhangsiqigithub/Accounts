@@ -1,5 +1,6 @@
 package com.dragon.accounts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -98,5 +99,11 @@ public class MainActivity extends FragmentActivity {
         if (mSettingModel != null) {
             mSettingModel.release();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        accountFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -1,7 +1,33 @@
 <resources>
-    <string name="app_name">简单记账</string>
+    <string name="app_name">轻记账</string>
+    <string name="app_user_temp">叶子</string>
     <string name="string_home_tv_hint">新账本</string>
-    <string name="string_setting_tv_hint">设置</string>
+    <string name="string_setting">设置</string>
     <string name="string_detail_tv_hint">详情</string>
     <string name="string_home_btn_add">添加</string>
+    <string name="string_total_revenue">总收入</string>
+    <string name="string_total_expenses">总支出</string>
+    <string name="string_total_balance">总结余</string>
+    <string name="string_account_book_default_title">日常账本</string>
+    <string name="string_account_book_size_unit">笔</string>
+    <string name="string_account_add_text_hint">新建账本</string>
+    <string name="string_btn_ok">确定</string>
+    <string name="string_btn_cancel">取消</string>
+    <string name="string_account_add_error_tips">请输入账本名称</string>
+    <string name="string_wages">工资</string>
+    <string name="string_revenue">收入</string>
+    <string name="string_expenses">支出</string>
+    <string name="string_account_type_common">一般</string>
+    <string name="calendar">Calendar</string>
+    <string name="previous">Go to previous</string>
+    <string name="next">Go to next</string>
+    <string name="string_accounting_content_hint">添加备注</string>
+    <string name="string_accounting_write_content_hint">记录花销更记录生活...</string>
+    <string name="string_accounting_write_content_remark">备注</string>
+    <string name="string_finish">完成</string>
+    <string name="string_add_account_type_title">添加分类</string>
+    <string name="string_add_account_type_hint">输入分类名称</string>
+    <string name="string_add_account_type_tips">输请输入分类名称</string>
+    <string name="string_setting_item_about">关于我们</string>
+    <string name="string_abount_decription">一款牛逼的App</string>
 </resources>

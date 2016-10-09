@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dip"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/string_setting"
+            android:textColor="#444444"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/setting_btn_back"
+            android:layout_width="48dip"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_background"
+            android:padding="15dip"
+            android:src="@mipmap/icon_arrow_back" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="10dip">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="48dip">
+
+            <ImageView
+                android:layout_width="48dip"
+                android:layout_height="match_parent"
+                android:padding="5dip"
+                android:src="@mipmap/icon_photo" />
+
+            <TextView
+                android:id="@+id/setting_hint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:padding="5dip"
+                android:text="@string/app_user_temp"
+                android:textColor="#444444"
+                android:textSize="14dip" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="10dip">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_line2" />
+
+        <LinearLayout
+            android:id="@+id/setting_layout_about"
+            android:layout_width="match_parent"
+            android:layout_height="48dip"
+            android:background="@drawable/selector_background"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/string_setting_item_about"
+                android:textColor="#444444"
+                android:textSize="16dip" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:src="@mipmap/icon_arrow" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/color_line2" />
+    </LinearLayout>
+</LinearLayout>
