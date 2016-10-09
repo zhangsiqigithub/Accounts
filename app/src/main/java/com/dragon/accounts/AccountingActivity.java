@@ -22,6 +22,7 @@ import com.dragon.accounts.model.accounting.adapter.AccountingListAdapter;
 import com.dragon.accounts.model.accounting.info.AccountIconInfo;
 import com.dragon.accounts.view.CalculatorView;
 import com.dragon.accounts.view.CalendarDialog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AccountingActivity extends Activity implements View.OnClickListener {
+public class AccountingActivity extends BaseActivity implements View.OnClickListener {
 
     public static void start(Activity activity, int reqCode) {
         if (activity != null) {
@@ -114,6 +115,8 @@ public class AccountingActivity extends Activity implements View.OnClickListener
                         AccountBookManager.getCurrentAccountBookId(getApplicationContext()), mTimeLong);
                 setResult(RESULT_OK);
                 finish();
+
+                MobclickAgent.onEvent(getApplicationContext(), "accounting_finish");
             }
         });
 

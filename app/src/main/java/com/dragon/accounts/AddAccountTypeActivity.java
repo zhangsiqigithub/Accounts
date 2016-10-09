@@ -4,14 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +20,7 @@ import com.dragon.accounts.adapter.AddAccountTypeAdapter;
 import com.dragon.accounts.model.AccountIconManager;
 import com.dragon.accounts.model.AccountManager;
 
-public class AddAccountTypeActivity extends Activity implements View.OnClickListener {
+public class AddAccountTypeActivity extends BaseActivity implements View.OnClickListener {
 
     public static void start(Activity activity, Bundle bundle, int reqCode) {
         if (activity == null)

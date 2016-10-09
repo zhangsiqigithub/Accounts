@@ -1,12 +1,11 @@
 package com.dragon.accounts;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class AboutActivity extends Activity implements View.OnClickListener {
+public class AboutActivity extends BaseActivity implements View.OnClickListener {
 
     public static void start(Context context) {
         if (context == null)

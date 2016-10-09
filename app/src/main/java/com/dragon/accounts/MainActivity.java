@@ -12,6 +12,8 @@ import com.dragon.accounts.adapter.MainViewPagerListAdapter;
 import com.dragon.accounts.fragment.AccountFragment;
 import com.dragon.accounts.fragment.DetailFragment;
 import com.dragon.accounts.model.SettingModel;
+import com.dragon.accounts.util.ConstantValue;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,13 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        MobclickAgent.onProfileSignIn("test");
+//        MobclickAgent.setDebugMode(true);
+        MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this,
+                ConstantValue.APP_KEY_YM_STATISTICS,
+                "qudao_id",
+                MobclickAgent.EScenarioType.E_UM_NORMAL));
+        MobclickAgent.enableEncrypt(false);// 日志加密设置
 
         initData();
         initView();
@@ -66,6 +75,31 @@ public class MainActivity extends FragmentActivity {
 
         home_viewpager.setAdapter(new MainViewPagerListAdapter(getSupportFragmentManager(), fragmentList));
         home_viewpager.setCurrentItem(0);
+        MobclickAgent.onPageStart(fragmentList.get(0).getClass().getSimpleName());
+        home_viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < fragmentList.size(); i++) {
+                    Fragment fragment = fragmentList.get(i);
+                    String fragmentName = fragment.getClass().getSimpleName();
+                    if (i == position) {
+                        MobclickAgent.onPageStart(fragmentName);
+                    } else {
+                        MobclickAgent.onPageEnd(fragmentName);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -83,6 +117,18 @@ public class MainActivity extends FragmentActivity {
 
     public void closeDrawer() {
         mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

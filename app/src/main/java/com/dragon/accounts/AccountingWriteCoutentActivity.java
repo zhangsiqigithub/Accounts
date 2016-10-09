@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-public class AccountingWriteCoutentActivity extends Activity implements View.OnClickListener {
+public class AccountingWriteCoutentActivity extends BaseActivity implements View.OnClickListener {
 
     public static void start(Activity activity, Bundle bundle, int requestCode) {
         if (activity == null)

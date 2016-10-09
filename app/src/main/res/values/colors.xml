@@ -9,7 +9,7 @@
     <color name="color_line2">#88ededed</color>
     <color name="color_line3">#44ededed</color>
     <color name="color_bg">#fffffb</color>
-    <color name="color_accounting_calculator_bg">#fffff8</color>
+    <color name="color_accounting_calculator_bg">@color/color_bg</color>
     <color name="color_accounting_calculator_number_text">#444444</color>
     <color name="color_accounting_calculator_line">@android:color/transparent</color>
     <color name="color_accounting_calculator_pressed">#44444444</color>
