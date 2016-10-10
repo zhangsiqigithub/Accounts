@@ -34,10 +34,10 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        MobclickAgent.onProfileSignIn("test");
-//        MobclickAgent.setDebugMode(true);
+        MobclickAgent.setDebugMode(true);
         MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this,
                 ConstantValue.APP_KEY_YM_STATISTICS,
-                "qudao_id",
+                ConstantValue.CHENNAL_ID,
                 MobclickAgent.EScenarioType.E_UM_NORMAL));
         MobclickAgent.enableEncrypt(false);// 日志加密设置
 

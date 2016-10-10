@@ -25,6 +25,17 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    productFlavors {
+        wandoujia {}
+        baidu {}
+        c360 {}
+        uc {}
+
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+            flavor.signingConfig signingConfigs.release
+        }
+    }
 }
 
 dependencies {

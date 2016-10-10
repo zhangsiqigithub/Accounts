@@ -7,4 +7,6 @@ public interface ConstantValue {
      */
     String APP_KEY_YM_STATISTICS = "57f9ea8f67e58ef8e800160d";
 
+    String CHENNAL_ID = "test";
+
 }
