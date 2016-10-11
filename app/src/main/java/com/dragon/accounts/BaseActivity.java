@@ -2,20 +2,19 @@ package com.dragon.accounts;
 
 import android.app.Activity;
 
-import com.umeng.analytics.MobclickAgent;
+import com.dragon.accounts.statistics.Reporter;
 
 public class BaseActivity extends Activity {
 
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
+        Reporter.onResume(this, getClass().getSimpleName());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageStart(getClass().getSimpleName());
-        MobclickAgent.onPause(this);
+        Reporter.onPause(this, getClass().getSimpleName());
     }
 }

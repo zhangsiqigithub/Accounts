@@ -2,6 +2,7 @@ package com.dragon.accounts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -12,8 +13,7 @@ import com.dragon.accounts.adapter.MainViewPagerListAdapter;
 import com.dragon.accounts.fragment.AccountFragment;
 import com.dragon.accounts.fragment.DetailFragment;
 import com.dragon.accounts.model.SettingModel;
-import com.dragon.accounts.util.ConstantValue;
-import com.umeng.analytics.MobclickAgent;
+import com.dragon.accounts.statistics.Reporter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +33,8 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        MobclickAgent.onProfileSignIn("test");
-        MobclickAgent.setDebugMode(true);
-        MobclickAgent.startWithConfigure(new MobclickAgent.UMAnalyticsConfig(this,
-                ConstantValue.APP_KEY_YM_STATISTICS,
-                ConstantValue.CHENNAL_ID,
-                MobclickAgent.EScenarioType.E_UM_NORMAL));
-        MobclickAgent.enableEncrypt(false);// 日志加密设置
 
+        Reporter.init(getApplicationContext());
         initData();
         initView();
     }
@@ -75,7 +69,7 @@ public class MainActivity extends FragmentActivity {
 
         home_viewpager.setAdapter(new MainViewPagerListAdapter(getSupportFragmentManager(), fragmentList));
         home_viewpager.setCurrentItem(0);
-        MobclickAgent.onPageStart(fragmentList.get(0).getClass().getSimpleName());
+        Reporter.onPageStart(fragmentList.get(0).getClass().getSimpleName());
         home_viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,9 +82,9 @@ public class MainActivity extends FragmentActivity {
                     Fragment fragment = fragmentList.get(i);
                     String fragmentName = fragment.getClass().getSimpleName();
                     if (i == position) {
-                        MobclickAgent.onPageStart(fragmentName);
+                        Reporter.onPageStart(fragmentName);
                     } else {
-                        MobclickAgent.onPageEnd(fragmentName);
+                        Reporter.onPageEnd(fragmentName);
                     }
                 }
             }
@@ -122,13 +116,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
+        Reporter.onResume(this, getClass().getSimpleName());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
+        Reporter.onPause(this, getClass().getSimpleName());
     }
 
     @Override
@@ -151,5 +145,11 @@ public class MainActivity extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         accountFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // 去掉保存方法，避免重复使用旧的fragment对象
+        // super.onSaveInstanceState(outState);
     }
 }

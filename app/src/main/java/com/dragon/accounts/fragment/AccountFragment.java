@@ -25,9 +25,9 @@ import com.dragon.accounts.model.account.info.AccountDateInfo;
 import com.dragon.accounts.model.account.info.AccountInfo;
 import com.dragon.accounts.model.account.info.IAccountInfo;
 import com.dragon.accounts.provider.IProivderMetaData;
+import com.dragon.accounts.statistics.Reporter;
 import com.dragon.accounts.util.AccountUtil;
 import com.dragon.accounts.util.TimeUtil;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,7 +188,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fragment_account_add:
-                MobclickAgent.onEvent(mContext, "fragment_account_add_btn_click");
+                Reporter.onEvent(mContext, "fragment_account_add_btn_click");
                 AccountingActivity.start(getActivity(), REQ_CODE);
                 break;
             case R.id.fragment_account_hint:

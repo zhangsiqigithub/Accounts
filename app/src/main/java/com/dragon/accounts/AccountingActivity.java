@@ -20,6 +20,7 @@ import com.dragon.accounts.model.AccountManager;
 import com.dragon.accounts.model.ColorManager;
 import com.dragon.accounts.model.accounting.adapter.AccountingListAdapter;
 import com.dragon.accounts.model.accounting.info.AccountIconInfo;
+import com.dragon.accounts.statistics.Reporter;
 import com.dragon.accounts.view.CalculatorView;
 import com.dragon.accounts.view.CalendarDialog;
 import com.umeng.analytics.MobclickAgent;
@@ -116,7 +117,7 @@ public class AccountingActivity extends BaseActivity implements View.OnClickList
                 setResult(RESULT_OK);
                 finish();
 
-                MobclickAgent.onEvent(getApplicationContext(), "accounting_finish");
+                Reporter.onEvent(getApplicationContext(), "accounting_finish");
             }
         });
 
