@@ -4,13 +4,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.dragon.accounts.fragment.BaseFragment;
+
 import java.util.List;
 
 public class MainViewPagerListAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> fragmentList;
+    private List<BaseFragment> fragmentList;
 
-    public MainViewPagerListAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+    public MainViewPagerListAdapter(FragmentManager fm, List<BaseFragment> fragmentList) {
         super(fm);
         this.fragmentList = fragmentList;
     }

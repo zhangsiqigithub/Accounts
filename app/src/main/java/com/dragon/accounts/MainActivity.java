@@ -2,7 +2,6 @@ package com.dragon.accounts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -11,6 +10,7 @@ import android.view.Gravity;
 
 import com.dragon.accounts.adapter.MainViewPagerListAdapter;
 import com.dragon.accounts.fragment.AccountFragment;
+import com.dragon.accounts.fragment.BaseFragment;
 import com.dragon.accounts.fragment.DetailFragment;
 import com.dragon.accounts.model.SettingModel;
 import com.dragon.accounts.statistics.Reporter;
@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity {
 
     private AccountFragment accountFragment;
     private DetailFragment detailFragment;
-    private List<Fragment> fragmentList;
+    private List<BaseFragment> fragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity {
             public void onAccountAdded() {
                 closeDrawer();
                 mSettingModel.resetData();
+                detailFragment.resetData();
             }
         });
     }
@@ -62,8 +63,11 @@ public class MainActivity extends FragmentActivity {
         mSettingModel = new SettingModel(this, findViewById(R.id.left_drawer));
         mSettingModel.setSettingModelCallback(new SettingModel.SettingModelCallback() {
             @Override
-            public void onAccountSelect() {
-                accountFragment.resetData();
+            public void onAccountBookSelect() {
+                for (BaseFragment fragment : fragmentList) {
+                    fragment.resetData();
+                }
+                home_viewpager.setCurrentItem(0);
             }
         });
 
@@ -79,10 +83,11 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 for (int i = 0; i < fragmentList.size(); i++) {
-                    Fragment fragment = fragmentList.get(i);
+                    BaseFragment fragment = fragmentList.get(i);
                     String fragmentName = fragment.getClass().getSimpleName();
                     if (i == position) {
                         Reporter.onPageStart(fragmentName);
+                        fragment.onPageSelected();
                     } else {
                         Reporter.onPageEnd(fragmentName);
                     }

@@ -57,14 +57,40 @@ public class AccountManager {
         }
     }
 
-    public static List<AccountInfo> queryAllAccounts(Context context, int currentAccountBookId) {
-        List<AccountInfo> tempList = new ArrayList<>();
+    public static List<AccountInfo> queryAccounts(Context context, int currentAccountBookId) {
         Cursor query = context.getContentResolver().query(
                 IProivderMetaData.AccountColumns.URI_ACCOUNT,
                 null,
                 IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + "=?",
                 new String[]{String.valueOf(currentAccountBookId)},
                 IProivderMetaData.AccountColumns.COLUMNS_DATE + " DESC");
+        return query(query);
+    }
+
+    public static List<AccountInfo> queryAccounts(Context context, int currentAccountBookId, int accountType) {
+        Cursor query = context.getContentResolver().query(
+                IProivderMetaData.AccountColumns.URI_ACCOUNT,
+                null,
+                IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " =? and " +
+                        IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE + " =? ",
+                new String[]{String.valueOf(currentAccountBookId), String.valueOf(accountType)},
+                IProivderMetaData.AccountColumns.COLUMNS_DATE + " DESC");
+        return query(query);
+    }
+
+    public static List<AccountInfo> queryAccounts(Context context, int currentAccountBookId, int accountType, String order) {
+        Cursor query = context.getContentResolver().query(
+                IProivderMetaData.AccountColumns.URI_ACCOUNT,
+                null,
+                IProivderMetaData.AccountBookColumns.COLUMNS_ACCOUNT_BOOK_ID + " =? and " +
+                        IProivderMetaData.AccountColumns.COLUMNS_ACCOUNT_TYPE + " =? ",
+                new String[]{String.valueOf(currentAccountBookId), String.valueOf(accountType)},
+                order);
+        return query(query);
+    }
+
+    private static List<AccountInfo> query(Cursor query) {
+        List<AccountInfo> tempList = new ArrayList<>();
         while (query != null && query.moveToNext()) {
             int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountColumns._ID));
             String title = query.getString(query.getColumnIndex(IProivderMetaData.AccountColumns.COLUMNS_NAME));

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/detail_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/string_detail_tv_hint"
-        android:textColor="#44444444"
-        android:textSize="30dip" />
+    <com.dragon.accounts.view.chart.charts.LineChart
+        android:id="@+id/detail_linechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
-</RelativeLayout>
+    <com.dragon.accounts.view.chart.charts.PieChart
+        android:id="@+id/detail_piechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+</LinearLayout>

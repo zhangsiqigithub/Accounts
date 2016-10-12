@@ -47,17 +47,17 @@ public class AccountIconManager {
         context.getContentResolver().insert(IProivderMetaData.AccountIconColumns.URI_ACCOUNT_ICON, contentValues);
     }
 
-    public static List<AccountIconInfo> queryAllAccountIcons(Context context, int iconType, AccountIconInfo.AccountingCallback callback) {
+    public static List<AccountIconInfo> queryAllAccountIcons(Context context, int accountType, AccountIconInfo.AccountingCallback callback) {
         List<AccountIconInfo> list = new ArrayList<>();
         Cursor query = context.getContentResolver().query(
                 IProivderMetaData.AccountIconColumns.URI_ACCOUNT_ICON, null,
                 IProivderMetaData.AccountIconColumns.COLUMNS_ICON_TYPE + "=?",
-                new String[]{String.valueOf(iconType)}, null);
+                new String[]{String.valueOf(accountType)}, null);
         while (query != null && query.moveToNext()) {
             int id = query.getInt(query.getColumnIndex(IProivderMetaData.AccountIconColumns._ID));
             int iconId = query.getInt(query.getColumnIndex(IProivderMetaData.AccountIconColumns.COLUMNS_ICON_ID));
             String iconName = query.getString(query.getColumnIndex(IProivderMetaData.AccountIconColumns.COLUMNS_ICON_NAME));
-            list.add(new AccountIconInfo(id, iconId, iconName, iconType, callback));
+            list.add(new AccountIconInfo(id, iconId, iconName, accountType, callback));
         }
         return list;
     }

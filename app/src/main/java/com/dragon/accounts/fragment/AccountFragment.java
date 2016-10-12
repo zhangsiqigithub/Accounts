@@ -70,12 +70,17 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                     } else {
                         mAdapter.notifyDataSetChanged();
                     }
-                    break;
-                case MSG_UPDATE_ACCOUNT_MONEY:
+
                     Bundle bundle = msg.getData();
                     setting_total_revenue_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_REVENUE)));
                     setting_total_balance_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_EXPENSES)));
                     fragment_account_title.setText(String.valueOf(bundle.getString(KEY_ACCOUNT_NAME)));
+                    break;
+                case MSG_UPDATE_ACCOUNT_MONEY:
+//                    Bundle bundle = msg.getData();
+//                    setting_total_revenue_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_REVENUE)));
+//                    setting_total_balance_size.setText(AccountUtil.getAccountMoney(bundle.getDouble(KEY_ACCOUNT_EXPENSES)));
+//                    fragment_account_title.setText(String.valueOf(bundle.getString(KEY_ACCOUNT_NAME)));
                     break;
                 case MSG_NOTIFY_ACCOUNT_ADDED:
                     if (mAccountFragmentCallback != null) {
@@ -123,7 +128,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
                 List<IAccountInfo> resultList = new ArrayList<>();
                 List<AccountDateInfo> dateList = new ArrayList<>();
-                List<AccountInfo> accountList = AccountManager.queryAllAccounts(mContext, mCurrentAccountBookId);
+                List<AccountInfo> accountList = AccountManager.queryAccounts(mContext, mCurrentAccountBookId);
 
                 double totalRevenue = 0;
                 double totaExpenses = 0;
@@ -154,9 +159,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                     }
                     resultList.add(info);
                 }
-                mAccountInfoList.clear();
-                mAccountInfoList.addAll(resultList);
-                mHandler.sendEmptyMessage(MSG_UPDATE);
+//                mHandler.sendEmptyMessage(MSG_UPDATE);
 
                 Cursor query = mContext.getContentResolver().query(IProivderMetaData.AccountBookColumns.URI_ACCOUNT_BOOK,
                         null,
@@ -169,12 +172,15 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 }
 
                 Message msg = Message.obtain();
-                msg.what = MSG_UPDATE_ACCOUNT_MONEY;
+                msg.what = MSG_UPDATE;
                 Bundle bundle = new Bundle();
                 bundle.putDouble(KEY_ACCOUNT_REVENUE, totalRevenue);
                 bundle.putDouble(KEY_ACCOUNT_EXPENSES, totaExpenses);
                 bundle.putString(KEY_ACCOUNT_NAME, name);
                 msg.setData(bundle);
+
+                mAccountInfoList.clear();
+                mAccountInfoList.addAll(resultList);
                 mHandler.sendMessage(msg);
 
                 mHandler.sendEmptyMessageDelayed(MSG_NOTIFY_ACCOUNT_ADDED, 100);
@@ -204,5 +210,10 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         if (requestCode == REQ_CODE && resultCode == Activity.RESULT_OK) {
             resetData();
         }
+    }
+
+    @Override
+    public void onPageSelected() {
+
     }
 }

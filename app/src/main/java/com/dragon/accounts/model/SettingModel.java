@@ -28,7 +28,7 @@ import java.util.List;
 public class SettingModel implements IAccountBookInfo.Callback, View.OnClickListener {
 
     public interface SettingModelCallback {
-        void onAccountSelect();
+        void onAccountBookSelect();
     }
 
     private static final int LIST_COLUMN = 3;
@@ -145,7 +145,7 @@ public class SettingModel implements IAccountBookInfo.Callback, View.OnClickList
                 AccountBookInfo accountBookInfo = (AccountBookInfo) list.get(position);
                 AccountBookManager.setCurrentAccountBookId(mContext, accountBookInfo.accountBookId);
                 if (mSettingModelCallback != null) {
-                    mSettingModelCallback.onAccountSelect();
+                    mSettingModelCallback.onAccountBookSelect();
                 }
                 break;
             case IAccountBookInfo.TYPE_ACCOUNT_ADD:

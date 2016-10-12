@@ -14,4 +14,17 @@ public class AccountInfo implements IAccountInfo {
     public int getType() {
         return TYPE_ACCOUNT;
     }
+
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", money=" + money +
+                ", accountType=" + accountType +
+                ", date=" + date +
+                ", accountIconId=" + accountIconId +
+                '}';
+    }
 }
